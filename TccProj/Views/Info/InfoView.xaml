@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:comp="clr-namespace:TccProj.Views.Info.Components"
+             x:Class="TccProj.Views.Info.InfoView"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="0,*,*,*,*,*,0" ColumnSpacing="20" RowSpacing="20" ColumnDefinitions="*,*" Padding="20">
+        <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="1" Grid.Column="0">
+            <StackLayout  x:Name="CpuInfo">
+                
+            </StackLayout>
+        </Frame>
+        <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="1" Grid.Column="1">
+            <StackLayout  x:Name="RamInfo">
+                
+            </StackLayout>
+        </Frame>
+        <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="2" Grid.Column="0">
+            <StackLayout  x:Name="SoInfo">
+                
+            </StackLayout>
+        </Frame>
+        <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" >
+            <StackLayout x:Name="QrCodeInfo">
+                <Label Text="QrCode:" FontSize="20" FontAttributes="Bold"></Label>
+                <Frame Background="#F3F3" HeightRequest="2" CornerRadius="50" Padding="0"></Frame>
+            </StackLayout>
+        </Frame>
+        <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="3" Grid.Column="0" Grid.RowSpan="2" >
+            <StackLayout x:Name="NfcInfo">
+                <Label Text="NFC:" FontSize="20" FontAttributes="Bold"></Label>
+                <Frame Background="#F3F3" HeightRequest="2" CornerRadius="50" Padding="0"></Frame>
+            </StackLayout>
+        </Frame>
+        <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="4" Grid.Column="1" Grid.RowSpan="2">
+            <StackLayout  x:Name="BeaconInfo">
+                <Label Text="Beacon:" FontSize="20" FontAttributes="Bold"></Label>
+                <Frame Background="#F3F3" HeightRequest="2" CornerRadius="50" Padding="0"></Frame>
+            </StackLayout>
+        </Frame>
+        <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="5" Grid.Column="0">
+        </Frame>
+
+
+    </Grid>
+
+
+</ContentPage>

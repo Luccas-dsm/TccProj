@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TccProj.Views.QrCode.QrCodeView">
+    <StackLayout >
+        <Button x:Name="btnQrcode" Text="Ler QRCODE" />
+        <Label x:Name="lblResultado" Text="" HorizontalTextAlignment="Center" />
+    </StackLayout>
+</ContentPage>

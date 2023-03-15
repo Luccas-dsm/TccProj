@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TccProj.Views.Info.Components.BoxInfo">
+    <ContentView.Content>
+        <StackLayout VerticalOptions="Center">
+            <Label x:Name="titulo" FontSize="20" FontAttributes="Bold"></Label>
+            <Label x:Name="conteudo" FontSize="20" ></Label>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

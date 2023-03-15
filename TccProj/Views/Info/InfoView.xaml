@@ -40,6 +40,10 @@
             </StackLayout>
         </Frame>
         <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="5" Grid.Column="0">
+            <StackLayout>
+            <Label Text="Gráficos:" FontSize="20" FontAttributes="Bold"></Label>
+            <ImageButton Source="imgChart.png" BackgroundColor="Transparent"  ScaleX="0.7" ScaleY="0.7" x:Name="btnGraficos" Clicked="btnGraficos_Clicked"></ImageButton>
+            </StackLayout>
         </Frame>
 
 

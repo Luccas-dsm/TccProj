@@ -1,4 +1,5 @@
 ﻿using TccProj.Models;
+using TccProj.Views.Charts;
 using TccProj.Views.Info.Components;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -42,8 +43,11 @@ namespace TccProj.Views.Info
                         break;
                 }
             }
+        }
 
-
+        private void btnGraficos_Clicked(object sender, System.EventArgs e)
+        {
+            Navigation.PushAsync(new GraficosView());
         }
     }
 }

@@ -18,6 +18,7 @@ namespace TccProj.Views.QrCode
         public QrCodeScan()
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, true);
 
             //Opções de Leitura
             var options = new MobileBarcodeScanningOptions

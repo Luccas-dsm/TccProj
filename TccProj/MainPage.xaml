@@ -13,11 +13,6 @@
             <Frame Grid.Row="1" BackgroundColor="#F3F3F3" WidthRequest="200" HeightRequest="200" CornerRadius="10" HasShadow="True" Padding="0">
                 <ImageButton BackgroundColor="Transparent" x:Name="NfcBtn" Clicked="NfcBtn_Clicked" Source="imgNfc.png" ScaleX="0.6" ScaleY="0.6"></ImageButton>
             </Frame>
-            <Frame Grid.Row="1" BackgroundColor="#F3F3F3" WidthRequest="200" HeightRequest="200" CornerRadius="10" HasShadow="True" Padding="0">
-                <ImageButton BackgroundColor="Transparent"  x:Name="BeaconBtn" Clicked="BeaconBtn_Clicked"  Source="imgInfo.png" ScaleX="0.6" ScaleY="0.6" >
-                    
-                </ImageButton>
-            </Frame>
         </StackLayout>
         <FlexLayout Grid.Row="3" Grid.Column="1" JustifyContent="End">
             <Frame  WidthRequest="50" HeightRequest="50" BackgroundColor="Transparent" CornerRadius="10" HasShadow="True" Padding="0">

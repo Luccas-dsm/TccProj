@@ -15,20 +15,26 @@ namespace TccProj.Views.QrCode
         public QrCodeView()
         {
             InitializeComponent();
-            btnQrcode.Clicked += async (sender, e) =>
-            {
-
-                QrCodeScan partial = new QrCodeScan();
-                partial.BarcodeReaded += ZXingView_BarcodeReaded;
-
-                await Navigation.PushModalAsync(partial);
-
-            };
+   
         }
         void ZXingView_BarcodeReaded(object sender, string e)
         {
-            lblResultado.Text = "QRCODE: " + e;
+         //   lblResultado.Text = "QRCODE: " + e;
         }
 
+
+        private async void btnQrcodeLeitura_Clicked(object sender, EventArgs e)
+        {
+      
+                QrCodeScan partial = new QrCodeScan();
+                partial.BarcodeReaded += ZXingView_BarcodeReaded;
+                await Navigation.PushModalAsync(partial);
+
+        }
+
+        private void btnQrcodeGravacao_Clicked(object sender, EventArgs e)
+        {
+
+        }
     }
 }

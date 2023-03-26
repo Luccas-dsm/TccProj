@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Java.Time.Temporal;
+using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Mobile;
@@ -18,8 +19,6 @@ namespace TccProj.Views.QrCode
         public QrCodeScan()
         {
             InitializeComponent();
-            NavigationPage.SetHasNavigationBar(this, true);
-
             //Opções de Leitura
             var options = new MobileBarcodeScanningOptions
             {
@@ -38,21 +37,26 @@ namespace TccProj.Views.QrCode
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 Options = options
             };
+            //Stopwatch stopwatch = new Stopwatch();
+            //stopwatch.Start();
+            ////incio da leitura
+            //zxing.OnScanResult += (result) =>
+            //Device.BeginInvokeOnMainThread(async () =>
+            //{
 
-            zxing.OnScanResult += (result) =>
-            Device.BeginInvokeOnMainThread(async () =>
-            {
+            //    // Para a analise
+            //    zxing.IsAnalyzing = false;
 
-                // Para a analise
-                zxing.IsAnalyzing = false;
+            //    BarcodeReaded?.Invoke(this, result.Text);
 
-                BarcodeReaded?.Invoke(this, result.Text);
+            //    await Navigation.PopModalAsync(); // retorna para a tela main
 
-                await Navigation.PopModalAsync();
+            //});
+            ////fim da leitura
 
-            });
+            //stopwatch.Stop();
 
-
+            //Console.WriteLine("Tempo: " + stopwatch.ElapsedMilliseconds + " ms");
             overlay = new ZXingDefaultOverlay
             {
                 TopText = "Escolhe um QRCode para leitura",

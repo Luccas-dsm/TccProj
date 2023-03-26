@@ -18,6 +18,7 @@
             <Frame  WidthRequest="50" HeightRequest="50" BackgroundColor="Transparent" CornerRadius="10" HasShadow="True" Padding="0">
                 <ImageButton BackgroundColor="Transparent" x:Name="InfoBtn" Source="imgInfo.png" Clicked="InfoBtn_Clicked" ></ImageButton>
             </Frame>
+            <Label x:Name="Teste" TextColor="black" FontSize="15"></Label>
         </FlexLayout>
     </Grid>
     

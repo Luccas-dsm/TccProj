@@ -15,7 +15,7 @@ namespace TccProj.Views.Info
             PreencheInformacoes();
         }
 
-        private async void PreencheInformacoes()
+        private  void PreencheInformacoes()
         {
             var mock = new MockDados();
 

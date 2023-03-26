@@ -32,8 +32,7 @@ namespace TccProj.Models
                         {
                             new DadosModel()
                             {
-                                Seq = "1",
-                                SeqInfoDispositivo="1",
+                                Seq = "1",                                
                                 Data= DateTime.Now,
                                 Tecnologia="QrCode",
                                 ModoOperacao="Leitura",
@@ -57,8 +56,7 @@ namespace TccProj.Models
                         {
                             new DadosModel()
                             {
-                                Seq = "1",
-                                SeqInfoDispositivo="1",
+                                Seq = "1",                                
                                 Data= DateTime.Now,
                                 Tecnologia="QrCode",
                                 ModoOperacao="Leitura",

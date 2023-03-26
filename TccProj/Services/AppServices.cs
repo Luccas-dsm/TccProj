@@ -26,6 +26,7 @@ namespace TccProj.Services
                 throw new Exception("Falha ao gravar o usuario");
             }
         }
+
         public async Task<UsuarioModel> BuscarUsuario(string seq, string nome)
         {
             var conteudo = (await FbClient.Child("Usuarios").OnceAsync<UsuarioModel>())
@@ -35,5 +36,19 @@ namespace TccProj.Services
             return conteudo.Object;
         }
 
+        public async Task<string> SalvarDispositivo(InfoDispositivoModel dispositivoModel)
+        {
+            try
+            {
+                var seq = await FbClient.Child("Usuarios")
+                    .PostAsync(dispositivoModel);
+                return seq.Key;
+            }
+            catch
+            {
+                throw new Exception("Falha ao gravar o usuario");
+            }
+
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Java.Sql;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace TccProj.Models

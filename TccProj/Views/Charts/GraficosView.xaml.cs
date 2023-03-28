@@ -1,9 +1,4 @@
-﻿
-using Microcharts;
-using SkiaSharp;
-using System.Collections.Generic;
-using TccProj.Models;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Entry = Microcharts.ChartEntry;
 

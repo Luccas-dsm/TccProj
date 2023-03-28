@@ -45,7 +45,7 @@ namespace TccProj
                 {
                     await DisplayAlert("Ops!", "Usuário já Cadastrado", "OK");
                 }
-            }          
+            }
             else
             {
                 await DisplayAlert("Ops!", "Usuário e a senha precisam estar preenchidos", "OK");

@@ -28,11 +28,10 @@ namespace TccProj
             {
                 Email = "teste1@email.com",
                 Senha = "1234"
-            }; ;
+            }; 
             //user = user.PreencheDados();
-            Usuario = new UsuarioModel();
            
-            Usuario.Seq = await app.SalvarUsuario(user);
+            var key = await app.SalvarUsuario(user);
         }
         public async void Retorno()
         {

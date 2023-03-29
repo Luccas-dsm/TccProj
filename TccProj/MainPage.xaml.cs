@@ -1,56 +1,64 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Xamarin.Forms;
+using TccProj.Views.QrCode;
+using TccProj.Views.NFC;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
+using TccProj.Views.Info;
 using TccProj.Models;
 using TccProj.Services;
-using TccProj.Views.Inicio;
-using Xamarin.Forms;
+using Xamarin.Forms.Internals;
+using static Android.Telephony.CarrierConfigManager;
+using Firebase.Auth;
 
 namespace TccProj
 {
     public partial class MainPage : ContentPage
     {
-        AppServices AppService = new AppServices();
+        AppServices app = new AppServices();
+
+        UsuarioModel Usuario;
         public MainPage()
         {
             InitializeComponent();
+            Salvar();
+            //Retorno();
+         
+            
+        }
+        public async void Salvar()
+        {
+           var user = new UsuarioModel();
+            user = user.PreencheDados();
+            Usuario = new UsuarioModel();
+            Usuario.Seq = await app.SalvarUsuario(user);
+        }
+        public async void Retorno()
+        {
+               var resultado =  await app.BuscarUsuario(null, "Marcelly");
+
+            Usuario = resultado;
+            Teste.Text = Usuario.Nome;
         }
 
-        private async void btnLogin_Clicked(object sender, EventArgs e)
+        private async void QrBtn_Clicked(object sender, EventArgs e)
         {
-            if (await AppService.ValidaUsuario(eEmail.Text, ePass.Text))
-                await Navigation.PushAsync(new InicioView());
-            else
-                await DisplayAlert("Ops!", "Usuário ou Senha está incorreto", "OK");
-
-
+            await Navigation.PushAsync(new QrCodeView());
 
         }
-
-        private async void btnCadastrar_Clicked(object sender, EventArgs e)
+        private async void NfcBtn_Clicked(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(eEmail.Text) && !string.IsNullOrEmpty(ePass.Text))
-            {
-                if (!await AppService.ValidaEmailUsuario(eEmail.Text))
-                {
-                    UsuarioModel usuario = new UsuarioModel()
-                    {
-                        Email = eEmail.Text,
-                        Senha = ePass.Text
-                    };
+            await Navigation.PushAsync(new NfcView());
+        }
 
-                    await AppService.SalvarUsuario(usuario);
-                    await DisplayAlert("Obaa! Gente nova.", "Seja bem vindo!", "OK");
-                    await Navigation.PushAsync(new InicioView());
-                }
-                else
-                {
-                    await DisplayAlert("Ops!", "Usuário já Cadastrado", "OK");
-                }
-            }
-            else
-            {
-                await DisplayAlert("Ops!", "Usuário e a senha precisam estar preenchidos", "OK");
-            }
-
+        private async void InfoBtn_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new InfoView());
         }
     }
 }

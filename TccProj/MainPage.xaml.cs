@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms;
-using TccProj.Views.QrCode;
-using TccProj.Views.NFC;
-using Xamarin.Forms.PlatformConfiguration;
-using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
-using TccProj.Views.Info;
+﻿
+using System;
 using TccProj.Models;
 using TccProj.Services;
-using Xamarin.Forms.Internals;
-using static Android.Telephony.CarrierConfigManager;
-using Firebase.Auth;
+using TccProj.Views.Info;
+using TccProj.Views.NFC;
+using TccProj.Views.QrCode;
+using Xamarin.Forms;
 
 namespace TccProj
 {
@@ -27,23 +18,28 @@ namespace TccProj
         {
             InitializeComponent();
             Salvar();
-            //Retorno();
-         
-            
+            Retorno();
+
+
         }
         public async void Salvar()
         {
-           var user = new UsuarioModel();
-            user = user.PreencheDados();
+            var user = new UsuarioModel()
+            {
+                Email = "teste1@email.com",
+                Senha = "1234"
+            }; ;
+            //user = user.PreencheDados();
             Usuario = new UsuarioModel();
+           
             Usuario.Seq = await app.SalvarUsuario(user);
         }
         public async void Retorno()
         {
-               var resultado =  await app.BuscarUsuario(null, "Marcelly");
+            var resultado = await app.BuscarUsuario(null, "teste1@email.com");
 
             Usuario = resultado;
-            Teste.Text = Usuario.Nome;
+            Teste.Text = Usuario.Email;
         }
 
         private async void QrBtn_Clicked(object sender, EventArgs e)

@@ -12,5 +12,6 @@ namespace TccProj.Models
         public string CPU { get; set; }
         public string MemoriaRam { get; set; }
         public bool PossuiNFC { get; set; }
+        public List<DadosModel> DadosTeste { get; set; }
     }
 }

@@ -1,9 +1,5 @@
 ﻿using Autofac;
-using System;
-using TccProj.Services;
-using TccProj.Services.Interfaces;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace TccProj
 {
@@ -15,7 +11,7 @@ namespace TccProj
         {
             InitializeComponent();
 
-           
+
             MainPage = new NavigationPage(new MainPage());
 
         }
@@ -33,7 +29,7 @@ namespace TccProj
         public static void RegisterType<TInterface, T>() where TInterface : class where T : class, TInterface
         {
             builder.RegisterType<T>().As<TInterface>();
-           // builder.RegisterType<IUsuarioService, UsuarioService>();
+            // builder.RegisterType<IUsuarioService, UsuarioService>();
         }
     }
 }

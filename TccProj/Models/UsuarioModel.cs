@@ -8,6 +8,7 @@ namespace TccProj.Models
         public string Seq { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
+        public List<InfoDispositivoModel> InfoDispositivos { get; set; }
 
     }
 }

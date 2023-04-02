@@ -1,9 +1,9 @@
 ﻿
 using System;
 using TccProj.Controller;
+using TccProj.Data;
 using TccProj.Models;
 using TccProj.Services;
-using TccProj.Services.Interfaces;
 using TccProj.Views.Info;
 using TccProj.Views.NFC;
 using TccProj.Views.QrCode;
@@ -15,42 +15,41 @@ namespace TccProj
     {
         AppServices app = new AppServices();
         AppController appController = new AppController();
-      public readonly IUsuarioService _usuarioService;
-
-        public MainPage(IUsuarioService usuarioService)
-        {
-            this._usuarioService = usuarioService;
-        }
-
-
         public MainPage()
         {
             InitializeComponent();
             appController.GetCPU();
             appController.GetTotalMemory();
-           // Salvar();
+            Salvar();
             //Retorno();
 
 
         }
         public async void Salvar()
         {
-            var user = new UsuarioModel()
-            {
-                Email = "teste1@email.com",
-                Senha = "1234"
-            }; 
-            //user = user.PreencheDados();
-           
-            var key = await _usuarioService.SalvarUsuario(user);
-        }
-        //public async void Retorno()
-        //{
-        //    var resultado = await app.BuscarUsuario(null, "teste1@email.com");
 
-        //    Usuario = resultado;
-        //    Teste.Text = Usuario.Email;
-        //}
+            //var user = new UsuarioModel()
+            //{
+            //    Email = "luccas@gmail.com",
+            //    Senha = "1234"
+            //};         
+            //var key = await app.SalvarUsuario(new UsuarioData(user));
+
+            var dispositivo = new InfoDispositivoModel()
+            {
+                CPU = "adreno",
+                Fabricante = "Samsung",
+                MemoriaRam = "6gb",
+                Modelo = "SM-760G",
+                PossuiNFC = true,
+                SeqUsuario = "XXX",
+                SistemaOperacional = "Android",
+                Seq = "X"
+            };
+
+            var key = await app.SalvarDispositivo(new InfoDispositivoData(dispositivo));
+
+        }
 
         private async void QrBtn_Clicked(object sender, EventArgs e)
         {

@@ -7,7 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using TccProj.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -18,6 +18,7 @@ namespace TccProj.Views.NFC
     {
         public const string ALERT_TITLE = "NFC";
         public const string MIME_TYPE = "application/com.companyname.nfcsample";
+        UsuarioModel Usuario { get; set; }
 
         NFCNdefTypeFormat _type;
         bool _makeReadOnly = false;
@@ -53,9 +54,10 @@ namespace TccProj.Views.NFC
 
         public bool NfcIsDisabled => !NfcIsEnabled;
 
-        public NfcView()
+        public NfcView(UsuarioModel usuario)
         {
             InitializeComponent();
+            this.Usuario= usuario;
         }
 
         protected async override void OnAppearing()

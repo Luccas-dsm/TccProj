@@ -9,10 +9,12 @@ namespace TccProj.Views.Info
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class InfoView : ContentPage
     {
-        public InfoView()
+        UsuarioModel Usuario { get; set; }
+        public InfoView(UsuarioModel usuario)
         {
             InitializeComponent();
             PreencheInformacoes();
+            this.Usuario = usuario;
         }
 
         private  void PreencheInformacoes()

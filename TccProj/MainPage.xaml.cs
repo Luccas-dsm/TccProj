@@ -15,16 +15,29 @@ namespace TccProj
     {
         AppServices app = new AppServices();
         AppController appController = new AppController();
+        UsuarioModel Usuario { get; set; }
         public MainPage()
         {
             InitializeComponent();
-            appController.GetCPU();
-            appController.GetTotalMemory();
-            Salvar();
+            
+            Login();
+            var dispositivo =  appController.InformacoesDispositivo(Usuario.Seq);
+          //  Salvar();
             //Retorno();
 
 
         }
+        public void Login()
+        {
+            Usuario = new UsuarioModel()
+            {
+                Seq= "-NS1asXbE9KnGJOaozXu",
+                Email= "luccas@gmail.com",
+                Senha = "1234"
+            };
+
+        }
+
         public async void Salvar()
         {
 
@@ -53,17 +66,17 @@ namespace TccProj
 
         private async void QrBtn_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new QrCodeView());
+            await Navigation.PushAsync(new QrCodeView(Usuario));
 
         }
         private async void NfcBtn_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new NfcView());
+            await Navigation.PushAsync(new NfcView(Usuario));
         }
 
         private async void InfoBtn_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new InfoView());
+            await Navigation.PushAsync(new InfoView(Usuario));
         }
     }
 }

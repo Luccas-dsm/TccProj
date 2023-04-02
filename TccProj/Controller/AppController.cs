@@ -3,20 +3,44 @@ using Android.OS;
 using Java.IO;
 using Java.Lang;
 using System;
+using System.Threading.Tasks;
+using TccProj.Data;
+using TccProj.Models;
+using TccProj.Services;
+using Xamarin.Essentials;
 
 namespace TccProj.Controller
 {
     public class AppController
     {
-        public string GravaDadosLeitura()
+
+        public AppServices AppService = new AppServices();
+
+
+        public async Task<InfoDispositivoModel> InformacoesDispositivo(string seqUsuario)
         {
-            return null;
+
+            if (await AppService.ValidaDispositivoPeloUsuarioEModelo(seqUsuario, Build.Model))
+            {
+                var dispositivo = new InfoDispositivoModel()
+                {
+                    CPU = Build.CpuAbi,
+                    Fabricante = Build.Manufacturer,
+                    MemoriaRam = GetTotalMemory() + " Mb",
+                    Modelo = Build.Model,
+                    PossuiNFC = true,
+                    SeqUsuario = seqUsuario,
+                    SistemaOperacional = DeviceInfo.Platform +" "+ Build.VERSION.Release,
+                };
+                dispositivo.Seq = await AppService.SalvarDispositivo(new InfoDispositivoData(dispositivo));
+                return dispositivo;
+            }
+            else
+            {
+                return await AppService.BuscarDispositivoPeloUsuarioEModelo(seqUsuario, Build.Model);
+            
+            }
         }
-        public string GravaDadosGravacao()
-        {
-            return null;
-        }
-        
 
         public void GetWindowsCPU()
         {
@@ -49,13 +73,7 @@ namespace TccProj.Controller
             // Exibir o modelo da CPU do dispositivo
             var X = cpuModel;
         }
-        public void GetCPU()
-        {
-            string deviceModel = Build.Model;   //modelo do dispositivo
-            string fabricante = Build.Manufacturer; //fabricante 
-            string cpuAbi = Build.CpuAbi;   //arquitetura
 
-        }
 
         public double GetTotalMemory()
         {

@@ -9,7 +9,7 @@ using TccProj.Models;
 
 namespace TccProj.Services
 {
-    public class AppServices 
+    public class AppServices
     {
         private readonly static string SenhaFireBase = "vCqChR1tpxjZVTpNtKTJbJHx1AawYC41gyjJkSWm";
         private readonly FirebaseClient FbClient = new FirebaseClient("https://tccproj-d5cc4-default-rtdb.firebaseio.com/",
@@ -68,13 +68,22 @@ namespace TccProj.Services
             conteudo.Object.DadosTeste = await BuscarTestePeloDispositivo(conteudo.Key);
             return conteudo.Object;
         }
-        public async Task<InfoDispositivoModel> BuscarDispositivoPeloUsuario(string seqUsuario)
+        public async Task<InfoDispositivoModel> BuscarDispositivoPeloUsuarioEModelo(string seqUsuario, string modelo)
         {
             var conteudo = (await FbClient.Child("Dispositivo").OnceAsync<InfoDispositivoModel>())
-                           .Where(w => w.Object.SeqUsuario == seqUsuario)
+                           .Where(w => w.Object.SeqUsuario == seqUsuario && w.Object.Modelo == modelo)
                            .FirstOrDefault();
 
             return conteudo.Object;
+        }
+        public async Task<bool> ValidaDispositivoPeloUsuarioEModelo(string seqUsuario, string modelo)
+        {
+            var conteudo = (await FbClient.Child("Dispositivo").OnceAsync<InfoDispositivoModel>())
+                           .Where(w => w.Object.SeqUsuario == seqUsuario && w.Object.Modelo == modelo)
+                           .FirstOrDefault();
+
+
+            return conteudo == null ? true : false;
         }
         #endregion
 
@@ -98,7 +107,7 @@ namespace TccProj.Services
         {
             var conteudo = (await FbClient.Child("Testes").OnceAsync<DadosModel>())
                            .Where(w => w.Object.SeqInfoDispositivo == seqInfoDispositivo)
-                           .Select(s=> s.Object).ToList();
+                           .Select(s => s.Object).ToList();
 
             return conteudo;
         }

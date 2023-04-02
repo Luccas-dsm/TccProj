@@ -16,6 +16,7 @@ namespace TccProj.Controller
         {
             return null;
         }
+        
 
         public void GetWindowsCPU()
         {

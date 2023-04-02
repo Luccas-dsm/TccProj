@@ -1,7 +1,9 @@
 ﻿
 using System;
+using TccProj.Controller;
 using TccProj.Models;
 using TccProj.Services;
+using TccProj.Services.Interfaces;
 using TccProj.Views.Info;
 using TccProj.Views.NFC;
 using TccProj.Views.QrCode;
@@ -12,13 +14,22 @@ namespace TccProj
     public partial class MainPage : ContentPage
     {
         AppServices app = new AppServices();
+        AppController appController = new AppController();
+      public readonly IUsuarioService _usuarioService;
 
-        UsuarioModel Usuario;
+        public MainPage(IUsuarioService usuarioService)
+        {
+            this._usuarioService = usuarioService;
+        }
+
+
         public MainPage()
         {
             InitializeComponent();
-            Salvar();
-            Retorno();
+            appController.GetCPU();
+            appController.GetTotalMemory();
+           // Salvar();
+            //Retorno();
 
 
         }
@@ -31,15 +42,15 @@ namespace TccProj
             }; 
             //user = user.PreencheDados();
            
-            var key = await app.SalvarUsuario(user);
+            var key = await _usuarioService.SalvarUsuario(user);
         }
-        public async void Retorno()
-        {
-            var resultado = await app.BuscarUsuario(null, "teste1@email.com");
+        //public async void Retorno()
+        //{
+        //    var resultado = await app.BuscarUsuario(null, "teste1@email.com");
 
-            Usuario = resultado;
-            Teste.Text = Usuario.Email;
-        }
+        //    Usuario = resultado;
+        //    Teste.Text = Usuario.Email;
+        //}
 
         private async void QrBtn_Clicked(object sender, EventArgs e)
         {

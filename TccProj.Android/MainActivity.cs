@@ -16,6 +16,8 @@ namespace TccProj.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
+  
+
             base.OnCreate(savedInstanceState);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
@@ -34,6 +36,7 @@ namespace TccProj.Droid
                         new Setter { Property = Button.CornerRadiusProperty, Value = 5 },
                 }
             };
+
             Xamarin.Forms.Application.Current.Resources.Add(buttonStyle);
 
         }

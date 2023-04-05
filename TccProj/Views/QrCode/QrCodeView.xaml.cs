@@ -9,13 +9,13 @@ namespace TccProj.Views.QrCode
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class QrCodeView : ContentPage
     {
-        UsuarioModel Usuario { get; set; }
+        InfoDispositivoModel Dispositivo { get; set; }
 
         public event EventHandler<string> BarcodeReaded;
-        public QrCodeView(UsuarioModel usuario)
+        public QrCodeView(InfoDispositivoModel dispositivo)
         {
             InitializeComponent();
-            this.Usuario = usuario;
+            this.Dispositivo = dispositivo;
         }
         void ZXingView_BarcodeReaded(object sender, string e)
         {
@@ -32,9 +32,9 @@ namespace TccProj.Views.QrCode
 
         }
 
-        private void btnQrcodeGravacao_Clicked(object sender, EventArgs e)
+        private async void btnQrcodeGravacao_Clicked(object sender, EventArgs e)
         {
-
+            await Navigation.PushModalAsync(new QrCodeGravarView());
         }
     }
 }

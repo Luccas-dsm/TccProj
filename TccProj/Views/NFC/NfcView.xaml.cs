@@ -18,7 +18,7 @@ namespace TccProj.Views.NFC
     {
         public const string ALERT_TITLE = "NFC";
         public const string MIME_TYPE = "application/com.companyname.nfcsample";
-        UsuarioModel Usuario { get; set; }
+        InfoDispositivoModel Dispositivo { get; set; }
 
         NFCNdefTypeFormat _type;
         bool _makeReadOnly = false;
@@ -54,10 +54,10 @@ namespace TccProj.Views.NFC
 
         public bool NfcIsDisabled => !NfcIsEnabled;
 
-        public NfcView(UsuarioModel usuario)
+        public NfcView(InfoDispositivoModel dispositivo)
         {
             InitializeComponent();
-            this.Usuario= usuario;
+            this.Dispositivo = dispositivo;
         }
 
         protected async override void OnAppearing()
@@ -71,8 +71,8 @@ namespace TccProj.Views.NFC
             {
                 if (!CrossNFC.Current.IsAvailable)
                 {
-                    await ShowAlert("O seu dispositivo não possui a tecnologia NFC");
-                    Navigation.PopModalAsync();
+                    await DisplayAlert("Ops!","O seu dispositivo não possui a tecnologia NFC","OK");
+             //       await Navigation.PopModalAsync();
                 }
                 else
                 {

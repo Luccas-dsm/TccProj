@@ -1,4 +1,7 @@
-﻿using TccProj.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using TccProj.Models;
+using TccProj.Services;
 using TccProj.Views.Charts;
 using TccProj.Views.Info.Components;
 using Xamarin.Forms;
@@ -9,15 +12,21 @@ namespace TccProj.Views.Info
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class InfoView : ContentPage
     {
-        UsuarioModel Usuario { get; set; }
-        public InfoView(UsuarioModel usuario)
+        private InfoDispositivoModel Dispositivo { get; set; }
+        private List<DadosModel> Dados { get; set; }
+        private AppServices AppService = new AppServices();
+        public InfoView(InfoDispositivoModel dispositivo)
         {
             InitializeComponent();
+            this.Dispositivo = dispositivo;
+            //DadosTestes();
             PreencheInformacoes();
-            this.Usuario = usuario;
         }
+        private async void DadosTestes() => Dados = await AppService.BuscarTestePeloDispositivo(Dispositivo.Seq);
 
-        private  void PreencheInformacoes()
+
+ 
+        private void PreencheInformacoes()
         {
             var mock = new MockDados();
 
@@ -25,14 +34,14 @@ namespace TccProj.Views.Info
             {
                 switch (item.Titulo)
                 {
-                    case "CPU":             
-                        CpuInfo.Children.Add(new BoxInfo(item.Titulo, item.Conteudo));
+                    case "CPU":
+                        CpuInfo.Children.Add(new BoxInfo("CPU", Dispositivo.CPU));
                         break;
                     case "RAM":
-                        RamInfo.Children.Add(new BoxInfo(item.Titulo, item.Conteudo));
+                        RamInfo.Children.Add(new BoxInfo("RAM", Dispositivo.MemoriaRam));
                         break;
                     case "SO":
-                        SoInfo.Children.Add(new BoxInfo(item.Titulo, item.Conteudo));
+                        SoInfo.Children.Add(new BoxInfo("SO", Dispositivo.SistemaOperacional));
                         break;
                     case "QRCode":
                         QrCodeInfo.Children.Add(new BoxInfo(item.Descricao, item.Conteudo));

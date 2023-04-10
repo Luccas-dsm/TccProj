@@ -26,7 +26,7 @@ namespace TccProj.Views.QrCode
         private async void btnQrcodeLeitura_Clicked(object sender, EventArgs e)
         {
 
-            QrCodeScan partial = new QrCodeScan();
+            QrCodeScan partial = new QrCodeScan(Dispositivo);
             partial.BarcodeReaded += ZXingView_BarcodeReaded;
             await Navigation.PushModalAsync(partial);
 

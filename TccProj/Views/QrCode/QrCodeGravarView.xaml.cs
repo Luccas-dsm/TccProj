@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Android.App;
+using System;
 using System.IO;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -24,12 +25,13 @@ namespace TccProj.Views.QrCode
             stackPrincipal.Children.Add(barcode);
 
 
-        
+
         }
 
         private void btnAnexar_Clicked(object sender, EventArgs e)
         {
-            CompartilharImagem(barcode.BarcodeValue);
+            //CompartilharImagem(barcode.BarcodeValue);
+            PegarCaminhoArquivo();
 
 
 
@@ -59,6 +61,21 @@ namespace TccProj.Views.QrCode
             });
         }
 
+        private string PegarCaminhoArquivo()
+        {
+            string pasta = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            string caminhoArquivo = Path.Combine(pasta, "exemplo.txt");
+            string conteudo = "";
+
+            if (File.Exists(caminhoArquivo))
+            {
+                using (StreamReader leitor = new StreamReader(caminhoArquivo))
+                {
+                    conteudo = leitor.ReadToEnd();
+                }
+            }
+            return conteudo;
+        }
 
     }
 }

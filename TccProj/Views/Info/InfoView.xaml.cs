@@ -15,16 +15,16 @@ namespace TccProj.Views.Info
         private InfoDispositivoModel Dispositivo { get; set; }
         private List<DadosModel> Dados { get; set; }
         private AppServices AppService = new AppServices();
-        public InfoView(InfoDispositivoModel dispositivo)
+        public InfoView(InfoDispositivoModel dispositivo)  
         {
             InitializeComponent();
             this.Dispositivo = dispositivo;
             //DadosTestes();
-            PreencheInformacoes();
+            //PreencheInformacoes();
         }
         private async void DadosTestes() => Dados = await AppService.BuscarTestePeloDispositivo(Dispositivo.Seq);
 
-
+/*
  
         private void PreencheInformacoes()
         {
@@ -54,7 +54,7 @@ namespace TccProj.Views.Info
                         break;
                 }
             }
-        }
+        }*/
 
         private void btnGraficos_Clicked(object sender, System.EventArgs e)
         {

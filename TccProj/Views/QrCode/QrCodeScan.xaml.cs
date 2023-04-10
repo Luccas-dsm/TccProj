@@ -1,8 +1,9 @@
-﻿using Java.Time.Temporal;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
+using TccProj.Data;
+using TccProj.Models;
+using TccProj.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Mobile;
@@ -15,10 +16,13 @@ namespace TccProj.Views.QrCode
     {
         ZXingScannerView zxing;
         ZXingDefaultOverlay overlay;
+        InfoDispositivoModel Dispositivo;
+        AppServices AppService = new AppServices();
         public event EventHandler<string> BarcodeReaded;
 
-        public QrCodeScan()
+        public QrCodeScan(InfoDispositivoModel infoDispositivo)
         {
+           this.Dispositivo = infoDispositivo;
             InitializeComponent();
             //Opções de Leitura
             var options = new MobileBarcodeScanningOptions
@@ -39,40 +43,54 @@ namespace TccProj.Views.QrCode
                 Options = options
             };
 
-            long tamanho = 0;
+            double tamanho = 0;
+            var dados = new DadosModel()
+            {
+                Data = DateTime.Now,
+                ModoOperacao = "Leitura",
+                Tecnologia = "QrCode",
+                SeqInfoDispositivo = Dispositivo.Seq,                
+            };
             Stopwatch stopwatch = new Stopwatch();
-
-
-            stopwatch.Start();
             //incio da leitura
             zxing.OnScanResult += (result) =>
-            Device.BeginInvokeOnMainThread(async () =>
             {
+                stopwatch.Start();
+                double memoryBefore = Process.GetCurrentProcess().WorkingSet64;
 
-                // Para a analise
-                zxing.IsAnalyzing = false;
-                tamanho = result.NumBits;
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+
+                    // Para a analise
+                    zxing.IsAnalyzing = false;
+                    dados.Tamanho = result.NumBits;
                     BarcodeReaded?.Invoke(this, result.Text);
+                    await Navigation.PopModalAsync(); // retorna para a tela main
 
-                await Navigation.PopModalAsync(); // retorna para a tela main
+                });
+                double memoryAfter = Process.GetCurrentProcess().WorkingSet64;
+                dados.UsoMemoria = memoryAfter - memoryBefore;
 
-            });
+                stopwatch.Stop();
+                long ticks = stopwatch.ElapsedTicks;
+                double seconds = stopwatch.Elapsed.TotalSeconds;
 
+                var frequenciaHz = ticks / seconds;
+                dados.UsoCpu = frequenciaHz / 1000000000; // divide por 1 bilhão para converter para GHz
+
+                dados.TempoResposta = stopwatch.Elapsed;
+            AppService.SalvarTeste(new DadosData(dados));
+
+            };
             //fim da leitura
 
-            stopwatch.Stop();
-
-
-            var x = stopwatch.Elapsed;
-
-        //    Console.WriteLine("Tempo: " + stopwatch. + " ms");
             overlay = new ZXingDefaultOverlay
             {
                 TopText = "Escolhe um QRCode para leitura",
                 BottomText = "O Código sera lido automaticamente",
                 //ShowFlashButton = zxing.HasTorch, //Lanterna
             };
-       
+
             var abort = new Button
             {
                 Text = "Cancelar",

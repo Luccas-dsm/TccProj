@@ -8,9 +8,10 @@ namespace TccProj.Models
         public string SeqInfoDispositivo { get; set; }        
         public string Tecnologia { get; set; }
         public DateTime Data { get; set; }
-        public long TempoResposta { get; set; }
-        public long  UsoMemoria { get; set; }
-        public long UsoCpu { get; set; }
+        public TimeSpan TempoResposta { get; set; }
+        public double  UsoMemoria { get; set; }
+        public double UsoCpu { get; set; }
+        public long Tamanho { get; set; }
         public string ModoOperacao { get; set;} //Leitura/Gravação
     }
 }

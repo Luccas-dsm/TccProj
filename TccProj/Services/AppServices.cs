@@ -88,7 +88,7 @@ namespace TccProj.Services
         #endregion
 
         #region[Dados dos Testes]
-        public async Task<string> SalvarTeste(DadosModel dados)
+        public async Task<string> SalvarTeste(DadosData dados)
         {
             try
             {

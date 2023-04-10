@@ -79,7 +79,7 @@ namespace TccProj.Views.QrCode
                 dados.UsoCpu = frequenciaHz / 1000000000; // divide por 1 bilhão para converter para GHz
 
                 dados.TempoResposta = stopwatch.Elapsed;
-            AppService.SalvarTeste(new DadosData(dados));
+            AppService.SalvarTeste(new DadosData(dados)); 
 
             };
             //fim da leitura

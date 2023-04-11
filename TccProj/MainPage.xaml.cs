@@ -1,4 +1,5 @@
 ﻿
+using Plugin.NFC;
 using System;
 using TccProj.Controller;
 using TccProj.Data;
@@ -71,7 +72,15 @@ namespace TccProj
         }
         private async void NfcBtn_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new NfcView(Dispositivo));
+            if (!CrossNFC.Current.IsAvailable)
+            {
+                DisplayAlert("Ops!", "O seu dispositivo não possui a tecnologia NFC", "OK");
+                
+            }
+            else
+            {
+            await Navigation.PushAsync(new NfcMenuView(Dispositivo));
+            }
         }
 
         private async void InfoBtn_Clicked(object sender, EventArgs e)

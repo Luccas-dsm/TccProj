@@ -116,5 +116,11 @@ namespace TccProj.Controller
 
             return totalRamInMb;
         }
+
+        public double TransoformarHzEmGhz(double frequencuaHZ) => frequencuaHZ / 1000000000;
+
+        public double ConversaoDeFrequencia(double ticks, double segundos) => ticks / segundos;
+
+
     }
 }

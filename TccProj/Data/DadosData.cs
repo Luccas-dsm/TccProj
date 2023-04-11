@@ -11,6 +11,7 @@ namespace TccProj.Data
         public TimeSpan TempoResposta { get; set; }
         public double UsoMemoria { get; set; }
         public double UsoCpu { get; set; }
+        public double Tamanho { get; set; }    
         public string ModoOperacao { get; set; } //Leitura/Gravação
 
         public DadosData(DadosModel dados)
@@ -22,6 +23,7 @@ namespace TccProj.Data
             this.UsoMemoria= dados.UsoMemoria;
             this.UsoCpu = dados.UsoCpu;
             this.ModoOperacao = dados.ModoOperacao;
+            this.Tamanho = dados.Tamanho;
         }
     }
 }

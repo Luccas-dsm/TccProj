@@ -11,7 +11,7 @@ namespace TccProj.Models
         public TimeSpan TempoResposta { get; set; }
         public double  UsoMemoria { get; set; }
         public double UsoCpu { get; set; }
-        public long Tamanho { get; set; }
+        public double Tamanho { get; set; }
         public string ModoOperacao { get; set;} //Leitura/Gravação
     }
 }

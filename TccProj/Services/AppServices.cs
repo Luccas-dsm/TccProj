@@ -73,6 +73,7 @@ namespace TccProj.Services
             var conteudo = (await FbClient.Child("Dispositivo").OnceAsync<InfoDispositivoModel>())
                            .Where(w => w.Object.SeqUsuario == seqUsuario && w.Object.Modelo == modelo)
                            .FirstOrDefault();
+            conteudo.Object.Seq = conteudo.Key;
 
             return conteudo.Object;
         }

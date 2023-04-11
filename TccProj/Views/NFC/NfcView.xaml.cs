@@ -18,6 +18,7 @@ namespace TccProj.Views.NFC
     {
         public const string ALERT_TITLE = "NFC";
         public const string MIME_TYPE = "application/com.companyname.nfcsample";
+
         InfoDispositivoModel Dispositivo { get; set; }
 
         NFCNdefTypeFormat _type;

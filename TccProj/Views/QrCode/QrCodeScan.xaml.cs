@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using TccProj.Controller;
 using TccProj.Data;
 using TccProj.Models;
 using TccProj.Services;
@@ -18,6 +19,7 @@ namespace TccProj.Views.QrCode
         ZXingDefaultOverlay overlay;
         InfoDispositivoModel Dispositivo;
         AppServices AppService = new AppServices();
+        AppController AppController = new AppController();
         public event EventHandler<string> BarcodeReaded;
 
         public QrCodeScan(InfoDispositivoModel infoDispositivo)
@@ -72,14 +74,14 @@ namespace TccProj.Views.QrCode
                 dados.UsoMemoria = memoryAfter - memoryBefore;
 
                 stopwatch.Stop();
-                long ticks = stopwatch.ElapsedTicks;
+                double ticks = stopwatch.ElapsedTicks;
                 double seconds = stopwatch.Elapsed.TotalSeconds;
 
-                var frequenciaHz = ticks / seconds;
-                dados.UsoCpu = frequenciaHz / 1000000000; // divide por 1 bilhão para converter para GHz
+                var frequenciaHz = AppController.ConversaoDeFrequencia(ticks, seconds);
+                dados.UsoCpu = AppController.TransoformarHzEmGhz(frequenciaHz); // divide por 1 bilhão para converter para GHz
 
                 dados.TempoResposta = stopwatch.Elapsed;
-            AppService.SalvarTeste(new DadosData(dados)); 
+                _ = AppService.SalvarTeste(new DadosData(dados)); 
 
             };
             //fim da leitura
@@ -100,10 +102,7 @@ namespace TccProj.Views.QrCode
             };
 
             switch (Device.RuntimePlatform)
-            {
-                case Device.iOS:
-                    abort.HeightRequest = 40;
-                    break;
+            {            
                 case Device.Android:
                     abort.HeightRequest = 50;
                     break;

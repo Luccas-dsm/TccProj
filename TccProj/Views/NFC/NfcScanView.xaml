@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TccProj.Views.NFC.NfcScanView"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#FFF">
+
+    <Grid RowDefinitions="*,*" RowSpacing="20" Padding="20">
+        <Frame BackgroundColor="#F3F3F3" Padding="0" Grid.Row="0" CornerRadius="10" HasShadow="True">
+            <StackLayout Spacing="50">
+                <Label Text="Aproxime da Tag para ler" FontSize="33" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#000"></Label>
+                <ImageButton BackgroundColor="Transparent" x:Name="NfcBtn" Source="imgNfc.png" ScaleX="1.2" ScaleY="1.2"></ImageButton>
+            </StackLayout>
+        </Frame>
+        <Frame  Padding="0" Grid.Row="1" CornerRadius="10" HasShadow="False">
+            <FlexLayout Direction="Column" JustifyContent="SpaceBetween">
+                <Label Text="Resultado da leitura"  FontSize="33" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#000"></Label>
+                <StackLayout x:Name="stackResultado">
+                    
+                </StackLayout>
+                <Button Text="Clique para expandir"></Button>
+            </FlexLayout>
+        </Frame>
+    </Grid>
+    
+</ContentPage>

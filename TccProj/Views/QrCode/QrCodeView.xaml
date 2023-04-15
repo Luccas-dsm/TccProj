@@ -2,18 +2,20 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              NavigationPage.HasNavigationBar="False"
-             x:Class="TccProj.Views.QrCode.QrCodeView">
+             x:Class="TccProj.Views.QrCode.QrCodeView"
+             BackgroundColor="#FFF">
 
     <Grid RowDefinitions="20,*,20,5" ColumnDefinitions="5,*,5" >
         <StackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" Spacing="20" >
             <Frame Grid.Row="1" BackgroundColor="#F3F3F3" WidthRequest="200" HeightRequest="200" CornerRadius="10" HasShadow="True" Padding="0">
-                <Button BackgroundColor="Transparent" x:Name="btnQrcodeLeitura" Clicked="btnQrcodeLeitura_Clicked" Text="Ler" TextColor="#000" FontSize="Large" FontAttributes="Bold"></Button>
+                <Button BackgroundColor="Transparent" x:Name="btnQrcodeLeitura" Clicked="btnQrcodeLeitura_Clicked" Text="Scanear" TextColor="#000" FontSize="Large" FontAttributes="Bold"></Button>
             </Frame>
             <Frame Grid.Row="1" BackgroundColor="#F3F3F3" WidthRequest="200" HeightRequest="200" CornerRadius="10" HasShadow="True" Padding="0">
                 <Button BackgroundColor="Transparent" x:Name="btnQrcodeGravacao" Clicked="btnQrcodeGravacao_Clicked" Text="Gravar" TextColor="#000" FontSize="Large" FontAttributes="Bold"></Button>
             </Frame>
         </StackLayout>
     </Grid>
+    
 </ContentPage>
 
 

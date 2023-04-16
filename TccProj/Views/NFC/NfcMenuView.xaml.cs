@@ -21,7 +21,7 @@ namespace TccProj.Views.NFC
 
         private async  void btnNfcLeitura_Clicked(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new NfcScanView());
+            await Navigation.PushAsync(new NfcScanView(Dispositivo));
 
         }
     }

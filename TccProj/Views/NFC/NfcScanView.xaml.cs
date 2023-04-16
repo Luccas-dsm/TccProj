@@ -1,9 +1,14 @@
 ﻿using Plugin.NFC;
 using System;
+using System.Diagnostics;
 using System.Runtime.ExceptionServices;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 using TccProj.Controller;
+using TccProj.Data;
+using TccProj.Models;
+using TccProj.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.QrCode.Internal;
@@ -16,6 +21,10 @@ namespace TccProj.Views.NFC
     public partial class NfcScanView : ContentPage
     {
         AppController AppController = new AppController();
+        AppServices AppService = new AppServices();
+        DadosModel Dados;
+        InfoDispositivoModel Dispositivo;
+        ITagInfo TagInfo;
         NFCNdefTypeFormat _type;
         public const string MIME_TYPE = "application/com.companyname.nfcsample";
         bool _makeReadOnly = false;
@@ -34,22 +43,45 @@ namespace TccProj.Views.NFC
                 OnPropertyChanged(nameof(NfcIsDisabled));
             }
         }
-        public NfcScanView()
+        public NfcScanView(InfoDispositivoModel infoDispositivo)
         {
+            this.Dispositivo = infoDispositivo;
             InitializeComponent();
-  
-
-            LerTag();
-
+            Dados = AppController.PreencheEscanearNfc();
+            Dados.SeqInfoDispositivo = Dispositivo.Seq;
 
         }
 
         async Task LerTag()
         {
+            Stopwatch stopwatch = new Stopwatch();
             try
             {
-                CrossNFC.Current.StartListening();
+                if (TagInfo != null)
+                {
+                    stopwatch.Start();
+                    double memoryBefore = Process.GetCurrentProcess().WorkingSet64;
+                    CrossNFC.Current.StartListening();
 
+                    double memoryAfter = Process.GetCurrentProcess().WorkingSet64;
+                    Dados.UsoMemoria = memoryBefore - memoryAfter;
+
+                    stopwatch.Stop();
+                    double ticks = stopwatch.ElapsedTicks;
+                    double seconds = stopwatch.Elapsed.TotalSeconds;
+
+                    var frequenciaHz = AppController.ConversaoDeFrequencia(ticks, seconds);
+                    Dados.UsoCpu = AppController.TransoformarHzEmGhz(frequenciaHz); // divide por 1 bilhão para converter para GHz
+
+                    Dados.TempoResposta = stopwatch.Elapsed;
+                    Dados.Tamanho = Encoding.UTF8.GetByteCount(TagInfo.Records[0].Message); 
+                    _ = AppService.SalvarTeste(new DadosData(Dados));
+
+                }
+                else
+                {
+                    CrossNFC.Current.StartListening();
+                }
             }
             catch (Exception ex)
             {
@@ -58,81 +90,21 @@ namespace TccProj.Views.NFC
         }
 
 
-        async void Current_OnTagDiscovered(ITagInfo tagInfo, bool format)
-        {
-            if (!CrossNFC.Current.IsWritingTagSupported)
-            {
-                await DisplayAlert("Opa!", "Este tipo de tag não aceita ser editada ou escrita", "Ok");
-                return;
-            }
 
-            try
-            {
-                NFCNdefRecord record = null;
-                switch (_type)
-                {
-                    case NFCNdefTypeFormat.WellKnown:
-                        record = new NFCNdefRecord
-                        {
-                            TypeFormat = NFCNdefTypeFormat.WellKnown,
-                            MimeType = MIME_TYPE,
-                            Payload = NFCUtils.EncodeToByteArray("Plugin.NFC is awesome!"),
-                            LanguageCode = "en"
-                        };
-                        break;
-                    case NFCNdefTypeFormat.Uri:
-                        record = new NFCNdefRecord
-                        {
-                            TypeFormat = NFCNdefTypeFormat.Uri,
-                            Payload = NFCUtils.EncodeToByteArray("https://github.com/franckbour/Plugin.NFC")
-                        };
-                        break;
-                    case NFCNdefTypeFormat.Mime:
-                        record = new NFCNdefRecord
-                        {
-                            TypeFormat = NFCNdefTypeFormat.Mime,
-                            MimeType = MIME_TYPE,
-                            Payload = NFCUtils.EncodeToByteArray("Plugin.NFC is awesome!")
-                        };
-                        break;
-                    default:
-                        break;
-                }
-
-                if (!format && record == null)
-                    throw new Exception("Record can't be null.");
-
-                tagInfo.Records = new[] { record };
-
-                if (format)
-                    CrossNFC.Current.ClearMessage(tagInfo);
-                else
-                {
-                    CrossNFC.Current.PublishMessage(tagInfo, _makeReadOnly);
-                }
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Ops!", "Encontramos um erro: " + ex.Message, "Ok");
-            }
-        }
         void UnsubscribeEvents()
         {
             CrossNFC.Current.OnMessageReceived -= Current_OnMessageReceived;
-            //CrossNFC.Current.OnMessagePublished -= Current_OnMessagePublished;
-            CrossNFC.Current.OnTagDiscovered -= Current_OnTagDiscovered;
-            //CrossNFC.Current.OnNfcStatusChanged -= Current_OnNfcStatusChanged;
-            // CrossNFC.Current.OnTagListeningStatusChanged -= Current_OnTagListeningStatusChanged;
 
         }
         async void Current_OnMessageReceived(ITagInfo tagInfo)
         {
+
             if (tagInfo == null)
             {
                 await DisplayAlert("Ops!", "Nenhuma tag encontrada", "Ok");
                 return;
             }
-
+            TagInfo = tagInfo;
             // Customized serial number
             var identifier = tagInfo.Identifier;
             var serialNumber = NFCUtils.ByteArrayToHexString(identifier, ":");
@@ -148,8 +120,8 @@ namespace TccProj.Views.NFC
             }
             else
             {
-                var result = tagInfo.Records[0];             
-                
+                var result = tagInfo.Records[0];
+
                 resultado.Text = result.Message;
                 resultado.FontSize = 20;
                 resultado.FontAttributes = FontAttributes.Bold;
@@ -171,7 +143,6 @@ namespace TccProj.Views.NFC
                 if (!CrossNFC.Current.IsAvailable)
                 {
                     await DisplayAlert("Ops!", "O seu dispositivo não possui a tecnologia NFC", "OK");
-                    //       await Navigation.PopModalAsync();
                 }
                 else
                 {
@@ -195,10 +166,6 @@ namespace TccProj.Views.NFC
             _eventsAlreadySubscribed = true;
 
             CrossNFC.Current.OnMessageReceived += Current_OnMessageReceived;
-            //CrossNFC.Current.OnMessagePublished += Current_OnMessagePublished;
-            CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
-            //CrossNFC.Current.OnNfcStatusChanged += Current_OnNfcStatusChanged;
-            //CrossNFC.Current.OnTagListeningStatusChanged += Current_OnTagListeningStatusChanged;
         }
 
         protected override bool OnBackButtonPressed()

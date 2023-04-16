@@ -191,5 +191,29 @@ namespace TccProj.Controller
             return link;
         }
 
+        public DadosModel PreencheEscanearNfc() => new DadosModel()
+        {
+            Data = DateTime.Now,
+            ModoOperacao = "Escanear",
+            Tecnologia = "NFC",       
+        };
+        public DadosModel PreencheGravarNfc() => new DadosModel()
+        {
+            Data = DateTime.Now,
+            ModoOperacao = "Gravar",
+            Tecnologia = "NFC",
+        };
+        public DadosModel PreencheEscanearQrCode() => new DadosModel()
+        {
+            Data = DateTime.Now,
+            ModoOperacao = "Escanear",
+            Tecnologia = "QrCode",
+        };
+        public DadosModel PreencheGravarQrCode() => new DadosModel()
+        {
+            Data = DateTime.Now,
+            ModoOperacao = "Gravar",
+            Tecnologia = "QrCode",
+        };
     }
 }

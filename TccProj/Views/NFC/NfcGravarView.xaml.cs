@@ -214,6 +214,7 @@ namespace TccProj.Views.NFC
 
                 if (type.HasValue) _type = type.Value;
                 CrossNFC.Current.StartPublishing(!type.HasValue);
+
             }
             catch (Exception ex)
             {

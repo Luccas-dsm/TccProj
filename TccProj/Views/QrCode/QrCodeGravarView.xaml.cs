@@ -23,6 +23,7 @@ namespace TccProj.Views.QrCode
         InfoDispositivoModel Dispositivo;
         AppController AppController = new AppController();
         AppServices AppService = new AppServices();
+
         public QrCodeGravarView(InfoDispositivoModel infoDispositivo)
         {
             this.Dispositivo = infoDispositivo;
@@ -61,6 +62,7 @@ namespace TccProj.Views.QrCode
             stackQrCode.Children.Clear();
             stackQrCode.Children.Add(barcode);
         }
+
         public ZXingBarcodeImageView GeradorQr(string conteudo, int width = 300, int height = 300, int margin = 10)
         {
             ZXingBarcodeImageView barcode = new ZXingBarcodeImageView
@@ -78,6 +80,7 @@ namespace TccProj.Views.QrCode
 
             return barcode;
         }
+
         private async void CompartilharImagem(string imagem)
         {
             await Share.RequestAsync(new ShareFileRequest

@@ -21,11 +21,15 @@ namespace TccProj.Views.QrCode
         AppServices AppService = new AppServices();
         AppController AppController = new AppController();
         public event EventHandler<string> BarcodeReaded;
+        DadosModel Dados;
 
         public QrCodeScan(InfoDispositivoModel infoDispositivo)
         {
-           this.Dispositivo = infoDispositivo;
+            this.Dispositivo = infoDispositivo;
+
+            Dados = AppController.PreencheEscanearQrCode();
             InitializeComponent();
+
             //Opções de Leitura
             var options = new MobileBarcodeScanningOptions
             {
@@ -45,13 +49,7 @@ namespace TccProj.Views.QrCode
                 Options = options
             };
 
-            var dados = new DadosModel()
-            {
-                Data = DateTime.Now,
-                ModoOperacao = "Leitura",
-                Tecnologia = "QrCode",
-                SeqInfoDispositivo = Dispositivo.Seq,                
-            };
+            Dados.SeqInfoDispositivo = Dispositivo.Seq;
             Stopwatch stopwatch = new Stopwatch();
             //incio da leitura
             zxing.OnScanResult += (result) =>
@@ -64,23 +62,23 @@ namespace TccProj.Views.QrCode
 
                     // Para a analise
                     zxing.IsAnalyzing = false;
-                    dados.Tamanho = result.NumBits;
+                    Dados.Tamanho = result.NumBits;
                     BarcodeReaded?.Invoke(this, result.Text);
                     await Navigation.PopModalAsync(); // retorna para a tela main
 
                 });
                 double memoryAfter = Process.GetCurrentProcess().WorkingSet64;
-                dados.UsoMemoria =   memoryBefore- memoryAfter;
+                Dados.UsoMemoria = memoryBefore - memoryAfter;
 
                 stopwatch.Stop();
                 double ticks = stopwatch.ElapsedTicks;
                 double seconds = stopwatch.Elapsed.TotalSeconds;
 
                 var frequenciaHz = AppController.ConversaoDeFrequencia(ticks, seconds);
-                dados.UsoCpu = AppController.TransoformarHzEmGhz(frequenciaHz); // divide por 1 bilhão para converter para GHz
+                Dados.UsoCpu = AppController.TransoformarHzEmGhz(frequenciaHz); // divide por 1 bilhão para converter para GHz
 
-                dados.TempoResposta = stopwatch.Elapsed;
-                _ = AppService.SalvarTeste(new DadosData(dados)); 
+                Dados.TempoResposta = stopwatch.Elapsed;
+                _ = AppService.SalvarTeste(new DadosData(Dados));
 
             };
             //fim da leitura
@@ -101,7 +99,7 @@ namespace TccProj.Views.QrCode
             };
 
             switch (Device.RuntimePlatform)
-            {            
+            {
                 case Device.Android:
                     abort.HeightRequest = 50;
                     break;

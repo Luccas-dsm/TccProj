@@ -9,6 +9,7 @@ namespace TccProj.Data
         public string Modelo { get; set; }
         public string SistemaOperacional { get; set; }
         public string CPU { get; set; }
+        public string GPU { get; set; }
         public string MemoriaRam { get; set; }
         public bool PossuiNFC { get; set; }
 
@@ -21,6 +22,7 @@ namespace TccProj.Data
             this.CPU = info.CPU;
             this.MemoriaRam = info.MemoriaRam;
             this.PossuiNFC = info.PossuiNFC;
+            this.GPU = info.GPU;
         }
     }
 }

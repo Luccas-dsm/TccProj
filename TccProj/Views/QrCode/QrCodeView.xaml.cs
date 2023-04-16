@@ -34,7 +34,7 @@ namespace TccProj.Views.QrCode
 
         private async void btnQrcodeGravacao_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new QrCodeGravarView());
+            await Navigation.PushModalAsync(new QrCodeGravarView(Dispositivo));
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using Plugin.NFC;
 using System;
 using System.Runtime.ExceptionServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-
+using TccProj.Controller;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.QrCode.Internal;
@@ -14,6 +15,7 @@ namespace TccProj.Views.NFC
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NfcScanView : ContentPage
     {
+        AppController AppController = new AppController();
         NFCNdefTypeFormat _type;
         public const string MIME_TYPE = "application/com.companyname.nfcsample";
         bool _makeReadOnly = false;
@@ -147,8 +149,7 @@ namespace TccProj.Views.NFC
             else
             {
                 var result = tagInfo.Records[0];             
-                var resultado = new Label();
-
+                
                 resultado.Text = result.Message;
                 resultado.FontSize = 20;
                 resultado.FontAttributes = FontAttributes.Bold;
@@ -212,5 +213,16 @@ namespace TccProj.Views.NFC
             await LerTag();
         }
 
+        private void btnOpenLink_Clicked(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(resultado.Text))
+            {
+                if (AppController.HasLink(resultado.Text))
+                {
+                    string link = AppController.ExtractLink(resultado.Text);
+                    Device.OpenUri(new Uri(link));
+                }
+            }
+        }
     }
 }

@@ -45,7 +45,6 @@ namespace TccProj.Views.QrCode
                 Options = options
             };
 
-            double tamanho = 0;
             var dados = new DadosModel()
             {
                 Data = DateTime.Now,
@@ -71,7 +70,7 @@ namespace TccProj.Views.QrCode
 
                 });
                 double memoryAfter = Process.GetCurrentProcess().WorkingSet64;
-                dados.UsoMemoria = memoryAfter - memoryBefore;
+                dados.UsoMemoria =   memoryBefore- memoryAfter;
 
                 stopwatch.Stop();
                 double ticks = stopwatch.ElapsedTicks;

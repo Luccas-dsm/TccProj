@@ -6,13 +6,16 @@
              BackgroundColor="#FFF"
              >
 
-    <StackLayout Padding="20" x:Name="stackPrincipal">
-        <Entry Placeholder="Digite o conteudo para gerar a tag" x:Name="text"></Entry>
-        <StackLayout HorizontalOptions="Center">
-            <Label Text="ou" FontAttributes="Bold" FontSize="20"></Label>
+
+    <Grid RowDefinitions="150,*" Padding="20" x:Name="gridP">
+        
+        <StackLayout Padding="0" x:Name="stackPrincipal" Grid.Row="0">
+            <Entry Placeholder="Digite o conteudo para gerar a tag" x:Name="text" PlaceholderColor="Black" TextColor="Black" ></Entry>
+            <Button x:Name="btnGerar" Clicked="btnGerar_Clicked" Text="Gerar QrCode" HeightRequest="60"></Button>    
         </StackLayout>
-        <Button x:Name="btnAnexar" Clicked="btnAnexar_Clicked" Text="Importar arquivo" HeightRequest="60"></Button>
-    </StackLayout>
-    
-    
+        <StackLayout Grid.Row="1" x:Name="stackQrCode"></StackLayout>
+    </Grid>
+
+
+
 </ContentPage>

@@ -12,23 +12,7 @@
                 <Editor Placeholder="Digite o texto que deseja gravar" TextColor="#000" PlaceholderColor="#000" x:Name="txtInput"  ></Editor>
       
 
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
-                <RadioButton x:Name="option1RadioButton"                 
-     BackgroundColor="#F3F3F3"
-                 IsChecked="True" 
-                 VerticalOptions="Center" />
-                <Label Text="Texto" 
-           TextColor="Black" 
-           FontSize="Medium"
-           VerticalOptions="Center" />
-                <RadioButton x:Name="option2RadioButton"                 
-                  BackgroundColor="#F3F3F3"
-                 VerticalOptions="Center" />
-                <Label Text="Link" 
-           TextColor="Black" 
-           FontSize="Medium"
-           VerticalOptions="Center" />
-            </StackLayout>
+
 
 
             <Button Text="Gravar Tag" TextColor="#000" BackgroundColor="#F8F8F8" x:Name="btnGravar" Clicked="btnGravar_Clicked" ></Button>

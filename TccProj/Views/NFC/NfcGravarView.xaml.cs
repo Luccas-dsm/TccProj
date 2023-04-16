@@ -1,13 +1,9 @@
 ﻿using Plugin.NFC;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ZXing.QrCode.Internal;
 
 namespace TccProj.Views.NFC
 {
@@ -35,7 +31,6 @@ namespace TccProj.Views.NFC
         public NfcGravarView()
         {
             InitializeComponent();
-            option1RadioButton.IsVisible = true;
             btnGravar.BackgroundColor = Color.FromHex("#F8F8F8");
             LerTag();
         }
@@ -88,7 +83,7 @@ namespace TccProj.Views.NFC
                         {
                             TypeFormat = NFCNdefTypeFormat.Mime,
                             MimeType = MIME_TYPE,
-                            Payload = NFCUtils.EncodeToByteArray("Plugin.NFC is awesome!")
+                            Payload = NFCUtils.EncodeToByteArray(txtInput.Text)
                         };
                         break;
                     default:
@@ -231,7 +226,7 @@ namespace TccProj.Views.NFC
         {
             try
             {
-                // ChkReadOnly.IsChecked = false;
+              
                 CrossNFC.Current.StopPublishing();
                 if (tagInfo.IsEmpty)
                     await DisplayAlert("Eba!", "A operação de formatação da Tag foi um sucesso!", "Ok");
@@ -253,18 +248,7 @@ namespace TccProj.Views.NFC
             {
                 btnGravar.BackgroundColor = Color.YellowGreen;
                 await DisplayAlert("Info", "Enquanto o botão estiver verde é só aproximar da tag para gravar", "Ok");
-
-
-                if (option1RadioButton.IsChecked)
-                {
-                    await Publish(NFCNdefTypeFormat.WellKnown);
-                }
-                else if (option2RadioButton.IsChecked)
-                {
-                    await Publish(NFCNdefTypeFormat.Uri);
-                }
-
-
+                await Publish(NFCNdefTypeFormat.WellKnown);
             }
             else
                 await DisplayAlert("Ops!", "O campo deve estar preenchido", "Ok");

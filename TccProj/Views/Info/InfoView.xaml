@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:comp="clr-namespace:TccProj.Views.Info.Components"
              x:Class="TccProj.Views.Info.InfoView"
-             NavigationPage.HasNavigationBar="False">
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#FFF"
+             >
 
-    <Grid RowDefinitions="0,*,*,*,*,*,0" ColumnSpacing="20" RowSpacing="20" ColumnDefinitions="*,*" Padding="20">
+    <Grid RowDefinitions="*,*,*,*" ColumnSpacing="20" RowSpacing="20" ColumnDefinitions="*,*" Padding="20" >
         <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="1" Grid.Column="0">
             <StackLayout  x:Name="CpuInfo">
                 
@@ -23,25 +25,20 @@
         </Frame>
         <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" >
             <StackLayout x:Name="QrCodeInfo">
-                <Label Text="QrCode:" FontSize="20" FontAttributes="Bold"></Label>
+                <Label Text="QrCode:" FontSize="20" FontAttributes="Bold" TextColor="#000"></Label>
                 <Frame Background="#F3F3" HeightRequest="2" CornerRadius="50" Padding="0"></Frame>
             </StackLayout>
         </Frame>
         <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="3" Grid.Column="0" Grid.RowSpan="2" >
             <StackLayout x:Name="NfcInfo">
-                <Label Text="NFC:" FontSize="20" FontAttributes="Bold"></Label>
+                <Label Text="NFC:" FontSize="20" FontAttributes="Bold" TextColor="#000"></Label>
                 <Frame Background="#F3F3" HeightRequest="2" CornerRadius="50" Padding="0"></Frame>
             </StackLayout>
         </Frame>
-        <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="4" Grid.Column="1" Grid.RowSpan="2">
-            <StackLayout  x:Name="BeaconInfo">
-                <Label Text="Beacon:" FontSize="20" FontAttributes="Bold"></Label>
-                <Frame Background="#F3F3" HeightRequest="2" CornerRadius="50" Padding="0"></Frame>
-            </StackLayout>
-        </Frame>
-        <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="5" Grid.Column="0" >
+       
+        <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="4" Grid.Column="1" >
             <StackLayout>
-                <Label Text="Gráficos:" FontSize="20" FontAttributes="Bold"></Label>
+                <Label Text="Gráficos:" FontSize="20" FontAttributes="Bold" TextColor="#000"></Label>
                 <ImageButton Source="imgChart.png" BackgroundColor="Transparent"  ScaleX="0.7" ScaleY="0.7" x:Name="btnGraficos" Clicked="btnGraficos_Clicked"></ImageButton>
             </StackLayout>
         </Frame>

@@ -4,6 +4,7 @@ using Android.OS;
 using Java.IO;
 using Java.Lang;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TccProj.Data;
@@ -190,12 +191,12 @@ namespace TccProj.Controller
             // Retorna o texto antes do link e o link
             return link;
         }
-
+        #region[Pre preenchimento dados de testes]
         public DadosModel PreencheEscanearNfc() => new DadosModel()
         {
             Data = DateTime.Now,
             ModoOperacao = "Escanear",
-            Tecnologia = "NFC",       
+            Tecnologia = "NFC",
         };
         public DadosModel PreencheGravarNfc() => new DadosModel()
         {
@@ -215,5 +216,48 @@ namespace TccProj.Controller
             ModoOperacao = "Gravar",
             Tecnologia = "QrCode",
         };
+        #endregion
+        public async Task<double> MediaTempoResposta(InfoDispositivoModel dispositivo)
+        {
+            var lista = await AppService.BuscarTestePeloDispositivo(dispositivo.Seq);
+
+            TimeSpan somaTempo = new TimeSpan();
+            lista.ForEach(f => somaTempo+= f.TempoResposta);
+
+            double mediaTempo = somaTempo.TotalSeconds / lista.Count;
+
+            return mediaTempo;
+        }
+        public async Task<double> MediaTempoLeituraQrCode(InfoDispositivoModel dispositivo)
+        {
+            var lista = await AppService.BuscarTestePeloDispositivo(dispositivo.Seq);
+
+
+            lista = lista.Where(w => w.ModoOperacao.Equals("Escanear") && w.Tecnologia.Equals("QrCode")).ToList();
+
+
+            TimeSpan somaTempo = new TimeSpan();
+            lista.ForEach(f => somaTempo += f.TempoResposta);
+
+            double mediaTempo = somaTempo.TotalSeconds / lista.Count;
+
+            return mediaTempo;
+        }
+
+        public async Task<double> MediaTempoGravacao(InfoDispositivoModel dispositivo)
+        {
+            var lista = await AppService.BuscarTestePeloDispositivo(dispositivo.Seq);
+
+
+            lista = lista.Where(w => w.ModoOperacao.Equals("Gravar") && w.Tecnologia.Equals("QrCode")).ToList();
+
+
+            TimeSpan somaTempo = new TimeSpan();
+            lista.ForEach(f => somaTempo += f.TempoResposta);
+
+            double mediaTempo = somaTempo.TotalSeconds / lista.Count;
+
+            return mediaTempo;
+        }
     }
 }

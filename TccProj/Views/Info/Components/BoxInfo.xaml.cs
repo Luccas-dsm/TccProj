@@ -18,6 +18,8 @@ namespace TccProj.Views.Info.Components
 
 			titulo.Text = title;
 			conteudo.Text = description;
+			titulo.TextColor = Color.Black;
+			conteudo.TextColor = Color.Black;
 		}
 	}
 }

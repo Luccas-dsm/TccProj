@@ -10,6 +10,7 @@ namespace TccProj.Models
         public string Modelo { get; set; }
         public string SistemaOperacional { get; set; }
         public string CPU { get; set; }
+        public string FabricanteCpu { get; set; }
         public string GPU { get; set; }
         public string MemoriaRam { get; set; }
         public bool PossuiNFC { get; set; }

@@ -4,6 +4,7 @@ using Android.OS;
 using Java.IO;
 using Java.Lang;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -34,6 +35,7 @@ namespace TccProj.Controller
                     PossuiNFC = true,
                     SeqUsuario = seqUsuario,
                     SistemaOperacional = DeviceInfo.Platform + " " + Build.VERSION.Release,
+                    FabricanteCpu = Build.Hardware
                 };
                 dispositivo.Seq = await AppService.SalvarDispositivo(new InfoDispositivoData(dispositivo));
                 return dispositivo;
@@ -222,42 +224,47 @@ namespace TccProj.Controller
             var lista = await AppService.BuscarTestePeloDispositivo(dispositivo.Seq);
 
             TimeSpan somaTempo = new TimeSpan();
-            lista.ForEach(f => somaTempo+= f.TempoResposta);
-
-            double mediaTempo = somaTempo.TotalSeconds / lista.Count;
-
-            return mediaTempo;
-        }
-        public async Task<double> MediaTempoLeituraQrCode(InfoDispositivoModel dispositivo)
-        {
-            var lista = await AppService.BuscarTestePeloDispositivo(dispositivo.Seq);
-
-
-            lista = lista.Where(w => w.ModoOperacao.Equals("Escanear") && w.Tecnologia.Equals("QrCode")).ToList();
-
-
-            TimeSpan somaTempo = new TimeSpan();
             lista.ForEach(f => somaTempo += f.TempoResposta);
 
             double mediaTempo = somaTempo.TotalSeconds / lista.Count;
 
             return mediaTempo;
         }
-
-        public async Task<double> MediaTempoGravacao(InfoDispositivoModel dispositivo)
+      
+        public async Task<List<TramentoDeDadosModel>> TratamentoDeDados(InfoDispositivoModel dispositivo)
         {
+
+            var listaTratada = new List<TramentoDeDadosModel>();
+
             var lista = await AppService.BuscarTestePeloDispositivo(dispositivo.Seq);
 
+            var listaQrCode = lista.Where(w => w.Tecnologia.Equals("QrCode")).ToList();
 
-            lista = lista.Where(w => w.ModoOperacao.Equals("Gravar") && w.Tecnologia.Equals("QrCode")).ToList();
+            var listaNfc = lista.Where(w => w.Tecnologia.Equals("NFC")).ToList();
+            TimeSpan tempo = new TimeSpan();
+
+            listaQrCode.ForEach(f =>  tempo += f.TempoResposta);
 
 
-            TimeSpan somaTempo = new TimeSpan();
-            lista.ForEach(f => somaTempo += f.TempoResposta);
+            double mediaTempoRespostaQrCode = tempo.TotalMilliseconds/listaQrCode.Count();
+            tempo = new TimeSpan();
 
-            double mediaTempo = somaTempo.TotalSeconds / lista.Count;
+            listaNfc.ForEach(f => tempo += f.TempoResposta);
+            double mediaTempoRespostaNfc = tempo.TotalMilliseconds / listaQrCode.Count();
 
-            return mediaTempo;
+            double mediaGravacaoQrCode = listaQrCode.Where(w => w.ModoOperacao.Equals("Gravacao")).Average(a => a.TempoResposta.TotalMilliseconds);
+            double mediaLeituraQrCode = listaQrCode.Where(w => w.ModoOperacao.Equals("Escanear")).Average(a => a.TempoResposta.TotalMilliseconds);
+       //   double mediaGravacaoNfc = listaNfc.Where(w => w.ModoOperacao.Equals("Gravacao")).Average(a => a.TempoResposta.TotalMilliseconds);
+            double mediaLeituraNfc = listaNfc.Where(w => w.ModoOperacao.Equals("Escanear")).Average(a => a.TempoResposta.TotalMilliseconds);
+
+            listaTratada.Add(new TramentoDeDadosModel() { Tecnologia = "QrCode", SeqInfoDispositivo = dispositivo.Seq, Tipo = "Gravacao", Media= mediaGravacaoQrCode });
+            listaTratada.Add(new TramentoDeDadosModel() { Tecnologia = "QrCode", SeqInfoDispositivo = dispositivo.Seq, Tipo = "Escanear", Media = mediaLeituraQrCode });
+          //listaTratada.Add(new TramentoDeDadosModel() { Tecnologia = "NFC", SeqInfoDispositivo = dispositivo.Seq, Tipo = "Gravacao", Media = mediaGravacaoNfc });
+            listaTratada.Add(new TramentoDeDadosModel() { Tecnologia = "NFC", SeqInfoDispositivo = dispositivo.Seq, Tipo = "Escanear", Media = mediaLeituraNfc });
+
+            return listaTratada;
         }
+
+        
     }
 }

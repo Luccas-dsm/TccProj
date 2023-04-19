@@ -106,11 +106,13 @@ namespace TccProj.Services
 
         public async Task<List<DadosModel>> BuscarTestePeloDispositivo(string seqInfoDispositivo)
         {
-            var conteudo = (await FbClient.Child("Testes").OnceAsync<DadosModel>())
-                           .Where(w => w.Object.SeqInfoDispositivo == seqInfoDispositivo)
-                           .Select(s => s.Object).ToList();
+            var conteudo = FbClient.Child("Testes").OnceAsync<DadosModel>().Result
+                         .Where(w => w.Object.SeqInfoDispositivo == seqInfoDispositivo).ToList();
 
-            return conteudo;
+ 
+
+     
+            return conteudo.Select(s=> s.Object).ToList();
         }
         public async Task<DadosModel> BuscarTeste(string seq)
         {

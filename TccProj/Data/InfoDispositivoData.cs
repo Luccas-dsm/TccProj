@@ -12,6 +12,7 @@ namespace TccProj.Data
         public string GPU { get; set; }
         public string MemoriaRam { get; set; }
         public bool PossuiNFC { get; set; }
+        public string FabricanteCpu { get; set; }
 
         public InfoDispositivoData(InfoDispositivoModel info) 
         {
@@ -23,6 +24,7 @@ namespace TccProj.Data
             this.MemoriaRam = info.MemoriaRam;
             this.PossuiNFC = info.PossuiNFC;
             this.GPU = info.GPU;
+            this.FabricanteCpu = info.FabricanteCpu;
         }
     }
 }

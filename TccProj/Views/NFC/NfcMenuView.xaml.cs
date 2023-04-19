@@ -16,7 +16,7 @@ namespace TccProj.Views.NFC
 
         private async void btnNfcGravacao_Clicked(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new NfcGravarView());
+            await Navigation.PushAsync(new NfcGravarView(Dispositivo));
         }
 
         private async  void btnNfcLeitura_Clicked(object sender, System.EventArgs e)

@@ -12,44 +12,44 @@ namespace TccProj.Views.Charts
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class GraficosView : ContentPage
     {
-     //   public static UsuarioModel Usuario { get; set; } = new UsuarioModel().PreencheDados();
+        public static UsuarioModel Usuario { get; set; }
+        public List<TramentoDeDadosModel> DadosTratados { get; set; }
 
 
 
-        //List<Entry> entradas = new List<Entry>
-        //{
-        //    new Entry(Usuario.InfoDispositivo[0].DadosTeste[0].UsoCpu)
-        //    {
-        //        Color=SKColor.Parse("#FF1943"),
-        //        Label = Usuario.InfoDispositivo[0].Fabricante,
-        //        ValueLabel = Usuario.InfoDispositivo[0].DadosTeste[0].UsoCpu.ToString()
-        //    },
-        //      new Entry(Usuario.InfoDispositivo[1].DadosTeste[0].UsoCpu)
-        //    {
-        //        Color=SKColor.Parse("#000"),
-        //        Label = Usuario.InfoDispositivo[1].Fabricante,
-        //        ValueLabel = Usuario.InfoDispositivo[1].DadosTeste[0].UsoCpu.ToString()
-        //    },
 
-        // };
+        private List<Entry> Entradas()
+        {
+            List<Entry> entradas = new List<Entry>();
+            DadosTratados.ForEach(f =>
+            {
+                entradas.Add(new Entry((float)f.Media)
+                {
+                    Color = SKColor.Parse("#FF1943"),
+                    Label = f.Tipo,
+                    ValueLabel = f.Media.ToString("N4"),
+                });
+            });
+            return entradas;
+        }
 
-        //public GraficosView()
-        //{
-        //    InitializeComponent();
+        public GraficosView(List<TramentoDeDadosModel> dadosTratados)
+        {
+            this.DadosTratados = dadosTratados;
+            InitializeComponent();
+
+            Grafico1.Chart = new BarChart()
+            {
+                Entries = Entradas(),
+                LabelOrientation = Orientation.Horizontal,
+                LabelTextSize = 36,
+                ValueLabelOrientation = Orientation.Horizontal,
 
 
-        //    Grafico1.Chart = new BarChart()
-        //    {
-        //        Entries = entradas,
-        //        LabelOrientation = Orientation.Horizontal,
-        //        LabelTextSize = 36,
-        //        ValueLabelOrientation = Orientation.Horizontal,
-
-
-        //    };
-        //    SKBitmap img = new SKBitmap();
-        //    SKCanvas Surface = new SKCanvas(img) { };
-        //    Grafico1.Chart.Draw(Surface, 200, 400);
-        //}
+            };
+            SKBitmap img = new SKBitmap();
+            SKCanvas Surface = new SKCanvas(img) { };
+            Grafico1.Chart.Draw(Surface, 200, 400);
+        }
     }
 }

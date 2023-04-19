@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TccProj.Views.Info.Components.BoxInfo">
     <ContentView.Content>
-        <StackLayout VerticalOptions="Center">
+        <StackLayout VerticalOptions="Center" x:Name="stackPrincipal">
             <Label x:Name="titulo" FontSize="20" FontAttributes="Bold"></Label>
             <Label x:Name="conteudo" FontSize="20" ></Label>
         </StackLayout>

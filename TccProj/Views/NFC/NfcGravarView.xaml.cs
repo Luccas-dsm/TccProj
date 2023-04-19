@@ -1,7 +1,9 @@
 ﻿using Plugin.NFC;
 using System;
 using System.Threading.Tasks;
-
+using TccProj.Controller;
+using TccProj.Models;
+using TccProj.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,6 +12,12 @@ namespace TccProj.Views.NFC
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NfcGravarView : ContentPage
     {
+        AppController AppController = new AppController();
+        AppServices AppService = new AppServices();
+        DadosModel Dados;
+        InfoDispositivoModel Dispositivo;
+        ITagInfo TagInfo;
+
         NFCNdefTypeFormat _type;
         public const string MIME_TYPE = "application/com.companyname.nfcsample";
         bool _makeReadOnly = false;
@@ -28,7 +36,7 @@ namespace TccProj.Views.NFC
                 OnPropertyChanged(nameof(NfcIsDisabled));
             }
         }
-        public NfcGravarView()
+        public NfcGravarView(InfoDispositivoModel infoDispositivo)
         {
             InitializeComponent();
             btnGravar.BackgroundColor = Color.FromHex("#F8F8F8");
@@ -112,8 +120,6 @@ namespace TccProj.Views.NFC
             CrossNFC.Current.OnMessageReceived -= Current_OnMessageReceived;
             CrossNFC.Current.OnMessagePublished -= Current_OnMessagePublished;
             CrossNFC.Current.OnTagDiscovered -= Current_OnTagDiscovered;
-            //CrossNFC.Current.OnNfcStatusChanged -= Current_OnNfcStatusChanged;
-            // CrossNFC.Current.OnTagListeningStatusChanged -= Current_OnTagListeningStatusChanged;
 
         }
         async void Current_OnMessageReceived(ITagInfo tagInfo)
@@ -185,9 +191,7 @@ namespace TccProj.Views.NFC
 
             CrossNFC.Current.OnMessageReceived += Current_OnMessageReceived;
             CrossNFC.Current.OnMessagePublished += Current_OnMessagePublished;
-            CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
-            //CrossNFC.Current.OnNfcStatusChanged += Current_OnNfcStatusChanged;
-            //CrossNFC.Current.OnTagListeningStatusChanged += Current_OnTagListeningStatusChanged;
+            CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;;
         }
 
         protected override bool OnBackButtonPressed()

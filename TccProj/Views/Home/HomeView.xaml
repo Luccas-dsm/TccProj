@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TccProj.Views.Home.HomeView"
+             BackgroundColor="#FFF"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="20,*,20,50,5" ColumnDefinitions="5,*,5" >
+    <StackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" Spacing="20" >
+        <Frame Grid.Row="1" BackgroundColor="#F3F3F3" WidthRequest="200" HeightRequest="200" CornerRadius="10" HasShadow="True" Padding="0">
+            <ImageButton BackgroundColor="Transparent"  x:Name="QrBtn" Clicked="QrBtn_Clicked"  Source="imgQrCode.png" ScaleX="0.6" ScaleY="0.6"></ImageButton>
+        </Frame>
+        <Frame Grid.Row="1" BackgroundColor="#F3F3F3" WidthRequest="200" HeightRequest="200" CornerRadius="10" HasShadow="True" Padding="0">
+            <ImageButton BackgroundColor="Transparent" x:Name="NfcBtn" Clicked="NfcBtn_Clicked" Source="imgNfc.png" ScaleX="0.6" ScaleY="0.6"></ImageButton>
+        </Frame>
+    </StackLayout>
+    <FlexLayout Grid.Row="3" Grid.Column="1" JustifyContent="End">
+        <Frame  WidthRequest="50" HeightRequest="50" BackgroundColor="Transparent" CornerRadius="10" HasShadow="True" Padding="0">
+            <ImageButton BackgroundColor="Transparent" x:Name="InfoBtn" Source="imgInfo.png" Clicked="InfoBtn_Clicked" ></ImageButton>
+        </Frame>
+        <Label x:Name="Teste" TextColor="black" FontSize="15"></Label>
+    </FlexLayout>
+    </Grid>
+</ContentPage>

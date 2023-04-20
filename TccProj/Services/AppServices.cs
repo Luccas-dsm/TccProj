@@ -40,6 +40,38 @@ namespace TccProj.Services
                            .FirstOrDefault();
 
             return conteudo.Object;
+
+        }
+
+        public async Task<string> UpdateUsuario(string nome)
+        {
+            var conteudo = (await FbClient.Child("Users").OnceAsync<UsuarioModel>())
+                           .Where(w => w.Object.Email == nome)
+                           .FirstOrDefault();
+
+            //conteudo.Object.ForEach(f => { if (f.Seq == "0") f.CPU = "Enyos"; });
+
+            await FbClient.Child("Users")
+                    .PutAsync(conteudo);
+
+            return conteudo.Object.Email;
+        }
+
+        public async Task<string> ValidaUsuario(string email, string senha)
+        {
+            var conteudo = (await FbClient.Child("Users").OnceAsync<UsuarioModel>())
+               .Where(w => w.Object.Email.Equals(email) && w.Object.Senha.Equals(senha))
+               .FirstOrDefault().Key;
+
+            return conteudo;
+        }
+        public async Task<bool> ValidaEmailUsuario(string email)
+        {
+            var conteudo = (await FbClient.Child("Users").OnceAsync<UsuarioModel>())
+               .Where(w => w.Object.Email.Equals(email))
+               .FirstOrDefault();
+
+            return conteudo != null;
         }
         #endregion
 

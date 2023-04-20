@@ -7,8 +7,8 @@
 
 
     <StackLayout VerticalOptions="Center" Padding="10" Spacing="10">
-        <Entry Placeholder="Digite seu email" Keyboard="Email" x:Name="eEmail" PlaceholderColor="#000"/>
-        <Entry Placeholder="Digite sua senha" IsPassword="True" x:Name="ePass" PlaceholderColor="#000"/>
+        <Entry Placeholder="Digite seu email" Keyboard="Email" x:Name="eEmail" PlaceholderColor="#000" TextColor="#000"/>
+        <Entry Placeholder="Digite sua senha" IsPassword="True" x:Name="ePass" PlaceholderColor="#000"  TextColor="#000"/>
         <StackLayout Spacing="10" Padding="30" >
             <Button Text="Login" CornerRadius="10" BackgroundColor="#1A1A1A" TextColor="#FFF" FontSize="24" FontAttributes="Bold" x:Name="btnLogin" Clicked="btnLogin_Clicked" ></Button>
             <Button Text="Cadastrar" CornerRadius="10" BackgroundColor="#474747" TextColor="#FFF" FontSize="24" FontAttributes="Bold" x:Name="btnCadastrar" Clicked="btnCadastrar_Clicked" ></Button>

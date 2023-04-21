@@ -1,5 +1,6 @@
 ﻿using Firebase.Database;
 using Firebase.Database.Query;
+using Java.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,9 +62,14 @@ namespace TccProj.Services
         {
             var conteudo = (await FbClient.Child("Users").OnceAsync<UsuarioModel>())
                .Where(w => w.Object.Email.Equals(email) && w.Object.Senha.Equals(senha))
-               .FirstOrDefault().Key;
+               .FirstOrDefault();
 
-            return conteudo;
+            string key;
+            if(conteudo!=null)
+                key = conteudo.Key;
+            else key = "";
+
+            return key;
         }
         public async Task<bool> ValidaEmailUsuario(string email)
         {

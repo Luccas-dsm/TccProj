@@ -53,7 +53,20 @@
     <EnableLLVM>false</EnableLLVM>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
-    <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
+    <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+    <AndroidEnableMultiDex>false</AndroidEnableMultiDex>
+    <AndroidLinkMode>Full</AndroidLinkMode>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <AndroidLinkTool>r8</AndroidLinkTool>
+    <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
+    <MandroidI18n />
+    <AndroidKeyStore>false</AndroidKeyStore>
+    <AndroidSigningKeyStore>C:\Users\lucca\AppData\Local\Xamarin\Mono for Android\Keystore\tccproj\tccproj.keystore</AndroidSigningKeyStore>
+    <AndroidSigningStorePass>Luccas06*</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>tccProj</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>Luccas06*</AndroidSigningKeyPass>
+    <AndroidApkSignerAdditionalArguments>tccProj</AndroidApkSignerAdditionalArguments>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -129,6 +142,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\imgShare.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

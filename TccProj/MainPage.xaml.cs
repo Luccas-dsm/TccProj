@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Android.Content;
+using Android.Net;
+using System;
 using TccProj.Controller;
 using TccProj.Data;
 using TccProj.Models;
@@ -16,6 +18,8 @@ namespace TccProj
         public MainPage()
         {
             InitializeComponent();
+
+          
 
 
         }

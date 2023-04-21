@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Net;
 using Android.Nfc;
 using Android.OS;
 using Android.Runtime;
@@ -10,7 +11,7 @@ using Xamarin.Forms;
 
 namespace TccProj.Droid
 {
-    [Activity(Label = "TccProj", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
+    [Activity(Label = "TccProj", Icon = "@drawable/logo", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
     [IntentFilter(new[] { NfcAdapter.ActionNdefDiscovered }, Categories = new[] { Intent.CategoryDefault }, DataMimeType = NfcView.MIME_TYPE)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
@@ -27,7 +28,7 @@ namespace TccProj.Droid
 
             var buttonStyle = new Style(typeof(Button))
             {
-                Setters = 
+                Setters =
                 {
                         new Setter { Property = Button.BackgroundColorProperty, Value = Color.Gray },
                         new Setter { Property = Button.TextColorProperty, Value = Color.White },
@@ -36,7 +37,11 @@ namespace TccProj.Droid
             };
             Xamarin.Forms.Application.Current.Resources.Add(buttonStyle);
 
+            var connectivityManager = (ConnectivityManager)GetSystemService(ConnectivityService);
+            var activeNetworkInfo = connectivityManager.ActiveNetworkInfo;
+
         }
+         
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);

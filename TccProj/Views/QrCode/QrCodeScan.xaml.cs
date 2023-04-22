@@ -64,7 +64,7 @@ namespace TccProj.Views.QrCode
                     zxing.IsAnalyzing = false;
                     Dados.Tamanho = result.NumBits;
                     BarcodeReaded?.Invoke(this, result.Text);
-                    await Navigation.PopModalAsync(); // retorna para a tela main
+                    MensagemResuldado(result.Text);
 
                 });
                 double memoryAfter = Process.GetCurrentProcess().WorkingSet64;
@@ -141,6 +141,12 @@ namespace TccProj.Views.QrCode
             zxing.IsScanning = false;
 
             base.OnDisappearing();
+        }
+
+        private async void MensagemResuldado(string resultado)
+        {
+            await DisplayAlert("Resultado:", resultado, "Ok");
+            await Navigation.PopModalAsync(); // retorna para a tela main
         }
     }
 }

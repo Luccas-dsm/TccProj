@@ -1,5 +1,4 @@
-﻿
-using Android.Opengl;
+﻿using Android.Opengl;
 using Android.OS;
 using Java.IO;
 using Java.Lang;
@@ -230,7 +229,7 @@ namespace TccProj.Controller
 
             return mediaTempo;
         }
-      
+
         public async Task<List<TramentoDeDadosModel>> TratamentoDeDados(InfoDispositivoModel dispositivo)
         {
 
@@ -243,28 +242,54 @@ namespace TccProj.Controller
             var listaNfc = lista.Where(w => w.Tecnologia.Equals("NFC")).ToList();
             TimeSpan tempo = new TimeSpan();
 
-            listaQrCode.ForEach(f =>  tempo += f.TempoResposta);
+            listaQrCode.ForEach(f => tempo += f.TempoResposta);
 
 
-            double mediaTempoRespostaQrCode = tempo.TotalMilliseconds/listaQrCode.Count();
+            double mediaTempoRespostaQrCode = tempo.TotalMilliseconds / listaQrCode.Count();
             tempo = new TimeSpan();
 
             listaNfc.ForEach(f => tempo += f.TempoResposta);
             double mediaTempoRespostaNfc = tempo.TotalMilliseconds / listaQrCode.Count();
 
-            double mediaGravacaoQrCode = listaQrCode.Where(w => w.ModoOperacao.Equals("Gravacao")).Average(a => a.TempoResposta.TotalMilliseconds);
-            double mediaLeituraQrCode = listaQrCode.Where(w => w.ModoOperacao.Equals("Escanear")).Average(a => a.TempoResposta.TotalMilliseconds);
-       //   double mediaGravacaoNfc = listaNfc.Where(w => w.ModoOperacao.Equals("Gravacao")).Average(a => a.TempoResposta.TotalMilliseconds);
-            double mediaLeituraNfc = listaNfc.Where(w => w.ModoOperacao.Equals("Escanear")).Average(a => a.TempoResposta.TotalMilliseconds);
+            try
+            {
+                double mediaGravacaoQrCode = CalculaMediaModoOperacao(listaQrCode, "Gravacao");
+                double mediaLeituraQrCode = CalculaMediaModoOperacao(listaQrCode, "Escanear");
+                listaTratada.Add(new TramentoDeDadosModel() { Tecnologia = "QrCode", SeqInfoDispositivo = dispositivo.Seq, Tipo = "Gravacao", Media = mediaGravacaoQrCode });
+                listaTratada.Add(new TramentoDeDadosModel() { Tecnologia = "QrCode", SeqInfoDispositivo = dispositivo.Seq, Tipo = "Escanear", Media = mediaLeituraQrCode });
+            }
+            catch (System.Exception e)
+            {
+                throw new System.Exception("Erro ao buscar dados dos testes " + e.Message);
+            }
 
-            listaTratada.Add(new TramentoDeDadosModel() { Tecnologia = "QrCode", SeqInfoDispositivo = dispositivo.Seq, Tipo = "Gravacao", Media= mediaGravacaoQrCode });
-            listaTratada.Add(new TramentoDeDadosModel() { Tecnologia = "QrCode", SeqInfoDispositivo = dispositivo.Seq, Tipo = "Escanear", Media = mediaLeituraQrCode });
-          //listaTratada.Add(new TramentoDeDadosModel() { Tecnologia = "NFC", SeqInfoDispositivo = dispositivo.Seq, Tipo = "Gravacao", Media = mediaGravacaoNfc });
-            listaTratada.Add(new TramentoDeDadosModel() { Tecnologia = "NFC", SeqInfoDispositivo = dispositivo.Seq, Tipo = "Escanear", Media = mediaLeituraNfc });
+            try
+            {
+                double mediaGravacaoNfc = CalculaMediaModoOperacao(listaNfc, "Gravacao");
+                double mediaLeituraNfc = CalculaMediaModoOperacao(listaNfc, "Escanear");
+                listaTratada.Add(new TramentoDeDadosModel() { Tecnologia = "NFC", SeqInfoDispositivo = dispositivo.Seq, Tipo = "Gravacao", Media = mediaGravacaoNfc });
+                listaTratada.Add(new TramentoDeDadosModel() { Tecnologia = "NFC", SeqInfoDispositivo = dispositivo.Seq, Tipo = "Escanear", Media = mediaLeituraNfc });
+            }
+            catch (System.Exception e)
+            {
+                throw new System.Exception("Erro ao buscar dados dos testes " + e.Message);
+            }
 
             return listaTratada;
         }
 
-        
+        private double CalculaMediaModoOperacao(List<DadosModel> lista, string parametro)
+        {
+            int quantidade = lista.Where(w => w.ModoOperacao == parametro).Count();
+            if (quantidade == 0)
+                return 0;
+
+            double tempoTotal = 0;
+
+            lista.ForEach(f => tempoTotal += f.TempoResposta.TotalMilliseconds);
+
+
+            return tempoTotal / quantidade;
+        }
     }
 }

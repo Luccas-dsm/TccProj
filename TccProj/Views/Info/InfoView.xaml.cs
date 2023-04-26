@@ -27,6 +27,10 @@ namespace TccProj.Views.Info
         protected override void OnAppearing()
         {
             base.OnAppearing();
+
+            NfcInfo.GestureRecognizers.Clear();
+            QrCodeInfo.GestureRecognizers.Clear();
+
             NfcInfo.GestureRecognizers.Add(btnChart_NFC());
             QrCodeInfo.GestureRecognizers.Add(btnChart_QrCode());
         }
@@ -87,7 +91,7 @@ namespace TccProj.Views.Info
 
         private void btnGraficos_Clicked(object sender, System.EventArgs e)
         {
-            //Navigation.PushAsync(new GraficosView());
+            Navigation.PushAsync(new GraficoComparativoView(TratamentoQrCode.OrderBy(o=> o.Tipo).ToList(), TratamentoNfc.OrderBy(o => o.Tipo).ToList()));
         }
     }
 }

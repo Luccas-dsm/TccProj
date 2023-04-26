@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TccProj.Views.Charts.GraficoComparativoView"
+             BackgroundColor="#FFF"
              NavigationPage.HasNavigationBar="False"
-             x:Class="TccProj.Views.Charts.GraficosView"
-             BackgroundColor="#FFF">
+             >
     <ContentPage.Content>
         <Grid RowDefinitions="500" VerticalOptions="Center" Padding="20">
-            
+
             <FlexLayout Grid.Row="0" x:Name="flexGrafico"></FlexLayout>
         </Grid>
- 
+
     </ContentPage.Content>
 </ContentPage>

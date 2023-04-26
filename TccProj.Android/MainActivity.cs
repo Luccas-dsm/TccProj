@@ -24,6 +24,7 @@ namespace TccProj.Droid
             CrossNFC.Init(this);
             //ZXing Inicialização
             global::ZXing.Net.Mobile.Forms.Android.Platform.Init();
+            OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init();
             LoadApplication(new App());
 
             var buttonStyle = new Style(typeof(Button))

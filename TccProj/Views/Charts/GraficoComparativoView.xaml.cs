@@ -1,25 +1,31 @@
-﻿
-using OxyPlot.Axes;
+﻿using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
+using OxyPlot.Xamarin.Forms;
 using OxyPlot;
+using System;
 using System.Collections.Generic;
-using TccProj.Models;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using OxyPlot.Xamarin.Forms;
-using System.Linq;
+using TccProj.Models;
+using ZXing.QrCode.Internal;
 
 namespace TccProj.Views.Charts
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class GraficosView : ContentPage
-    {
-        public List<TramentoDeDadosModel> DadosTratados { get; set; }
+	[XamlCompilation(XamlCompilationOptions.Compile)]
+	public partial class GraficoComparativoView : ContentPage
+	{
+        public List<TramentoDeDadosModel> DadosTratadosQrCode { get; set; }
+        public List<TramentoDeDadosModel> DadosTratadosNfc { get; set; }
 
-        public GraficosView(List<TramentoDeDadosModel> dadosTratados)
+        public GraficoComparativoView(List<TramentoDeDadosModel> dadosTratadosQrCode, List<TramentoDeDadosModel> dadosTratadosNfc)
         {
-            this.DadosTratados = dadosTratados;
+            this.DadosTratadosQrCode = dadosTratadosQrCode;
+            this.DadosTratadosNfc = dadosTratadosNfc;
             InitializeComponent();
             Navigation.RemovePage(this);
         }
@@ -28,6 +34,7 @@ namespace TccProj.Views.Charts
         {
             base.OnAppearing();
 
+    
 
             var plotView = new PlotView
             {
@@ -42,7 +49,7 @@ namespace TccProj.Views.Charts
         {
             var model = new PlotModel
             {
-                Title = $"{DadosTratados.FirstOrDefault().Tecnologia}",
+                Title = $"QrCode X Nfc",
                 Legends =
                 {
                     new Legend
@@ -55,7 +62,8 @@ namespace TccProj.Views.Charts
                 },
                 DefaultFontSize = 14,
             };
-
+            var qrCode = new BarSeries() { Title = "QrCode" }; 
+            var nfc = new BarSeries() { Title = "NFC" }; 
             var categoria = new CategoryAxis { Position = AxisPosition.Left };
             var valueAxis = new LinearAxis
             {
@@ -64,21 +72,26 @@ namespace TccProj.Views.Charts
                 MaximumPadding = 0.06,
                 AbsoluteMinimum = 0
             };
-
-            DadosTratados.ForEach(f =>
+      
+            DadosTratadosQrCode.ForEach(f =>
             {
-                var bar = new BarSeries { Title = f.Tipo };
-                bar.Items.Add(new BarItem { Value = f.Media });
-
-                model.Series.Add(bar);
-
+                qrCode.Items.Add(new BarItem { Value = f.Media});
             });
-            categoria.Labels.Add("Tempo de resposta");
+
+            DadosTratadosNfc.ForEach(f =>
+            {
+                nfc.Items.Add(new BarItem { Value = f.Media });
+            });
+
+            model.Series.Add(qrCode);
+            model.Series.Add(nfc);
+            categoria.Labels.Add("Escanner");
+            categoria.Labels.Add("Gravação");
             model.Axes.Add(categoria);
             model.Axes.Add(valueAxis);
 
             return model;
         }
- 
+
     }
 }

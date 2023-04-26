@@ -202,7 +202,7 @@ namespace TccProj.Controller
         public DadosModel PreencheGravarNfc() => new DadosModel()
         {
             Data = DateTime.Now,
-            ModoOperacao = "Gravar",
+            ModoOperacao = "Gravacao",
             Tecnologia = "NFC",
         };
         public DadosModel PreencheEscanearQrCode() => new DadosModel()
@@ -214,7 +214,7 @@ namespace TccProj.Controller
         public DadosModel PreencheGravarQrCode() => new DadosModel()
         {
             Data = DateTime.Now,
-            ModoOperacao = "Gravar",
+            ModoOperacao = "Gravacao",
             Tecnologia = "QrCode",
         };
         #endregion

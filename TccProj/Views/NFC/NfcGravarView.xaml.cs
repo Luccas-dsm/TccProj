@@ -183,7 +183,7 @@ namespace TccProj.Views.NFC
             await StartListeningIfNotiOS();
 
         }
-        void SubscribeEvents()
+       async void SubscribeEvents()
         {
             if (_eventsAlreadySubscribed)
                 return;
@@ -192,7 +192,8 @@ namespace TccProj.Views.NFC
 
             CrossNFC.Current.OnMessageReceived += Current_OnMessageReceived;
             CrossNFC.Current.OnMessagePublished += Current_OnMessagePublished;
-            CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered; ;
+            CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
+
         }
 
         protected override bool OnBackButtonPressed()
@@ -239,9 +240,8 @@ namespace TccProj.Views.NFC
 
                     Dados.TempoResposta = stopwatch.Elapsed;
                     Dados.Tamanho = Encoding.UTF8.GetByteCount(txtInput.Text);
+                    _ = AppService.SalvarTeste(new DadosData(Dados));
 
-                 //   _ = AppService.SalvarTeste(new DadosData(Dados));
-          
 
                 }
 
@@ -260,12 +260,17 @@ namespace TccProj.Views.NFC
 
                 CrossNFC.Current.StopPublishing();
                 if (tagInfo.IsEmpty)
-                    await DisplayAlert("Eba!", "A operação de formatação da Tag foi um sucesso!", "Ok");
+                {
+                    await DisplayAlert("Eba!", "A operação de formatação da Tag foi um sucesso!", "Ok");                
+                }
                 else
+                {
                     await DisplayAlert("Eba!", "A operação de gravação na Tag foi um sucesso!", "Ok");
+                   
+                }
 
                 btnGravar.BackgroundColor = Color.FromHex("#F8F8F8");
-
+                
             }
             catch (Exception ex)
             {

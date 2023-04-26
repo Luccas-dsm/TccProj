@@ -32,14 +32,7 @@ namespace TccProj.Views.QrCode
 
         private void btnGerar_Clicked(object sender, EventArgs e)
         {
-            var dados = new DadosModel()
-            {
-                Data = DateTime.Now,
-                ModoOperacao = "Gravacao",
-                Tecnologia = "QrCode",
-                SeqInfoDispositivo = Dispositivo.Seq,
-            };
-
+            var dados = AppController.PreencheGravarQrCode();
             Stopwatch stopwatch = new Stopwatch();
 
             stopwatch.Start();

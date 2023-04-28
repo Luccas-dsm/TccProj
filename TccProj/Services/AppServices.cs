@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TccProj.Controller;
 using TccProj.Data;
 using TccProj.Models;
 
@@ -73,6 +74,7 @@ namespace TccProj.Services
         }
         public async Task<bool> ValidaEmailUsuario(string email)
         {
+            
             var conteudo = (await FbClient.Child("Users").OnceAsync<UsuarioModel>())
                .Where(w => w.Object.Email.Equals(email))
                .FirstOrDefault();

@@ -1,6 +1,4 @@
-﻿using Android.Content;
-using Android.Net;
-using System;
+﻿using System;
 using TccProj.Controller;
 using TccProj.Data;
 using TccProj.Models;
@@ -19,7 +17,7 @@ namespace TccProj
         {
             InitializeComponent();
 
-          
+
 
 
         }
@@ -47,22 +45,29 @@ namespace TccProj
         {
             if (!string.IsNullOrEmpty(eEmail.Text) && !string.IsNullOrEmpty(ePass.Text))
             {
-                if (!await AppServices.ValidaEmailUsuario(eEmail.Text))
+                if (appController.ValidaEnderecoEmail(eEmail.Text))
                 {
-                    UsuarioModel usuario = new UsuarioModel()
+                    if (!await AppServices.ValidaEmailUsuario(eEmail.Text))
                     {
-                        Email = eEmail.Text,
-                        Senha = ePass.Text
-                    };
+                        UsuarioModel usuario = new UsuarioModel()
+                        {
+                            Email = eEmail.Text,
+                            Senha = ePass.Text
+                        };
 
-                    var seqUsuario = await AppServices.SalvarUsuario(new UsuarioData(usuario));
-                    await DisplayAlert("Obaa! Gente nova.", "Seja bem vindo!", "OK");
-                    Dispositivo = await appController.InformacoesDispositivo(seqUsuario);
-                    await Navigation.PushAsync(new HomeView(Dispositivo));
+                        var seqUsuario = await AppServices.SalvarUsuario(new UsuarioData(usuario));
+                        await DisplayAlert("Obaa! Gente nova.", "Seja bem vindo!", "OK");
+                        Dispositivo = await appController.InformacoesDispositivo(seqUsuario);
+                        await Navigation.PushAsync(new HomeView(Dispositivo));
+                    }
+                    else
+                    {
+                        await DisplayAlert("Ops!", "Usuário já Cadastrado", "OK");
+                    }
                 }
                 else
                 {
-                    await DisplayAlert("Ops!", "Usuário já Cadastrado", "OK");
+                    await DisplayAlert("Ops!", "Endereço de email invalido", "OK");
                 }
             }
             else

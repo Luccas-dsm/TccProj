@@ -5,6 +5,7 @@ using Java.Lang;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TccProj.Data;
@@ -290,6 +291,18 @@ namespace TccProj.Controller
 
 
             return tempoTotal / quantidade;
+        }
+        public bool ValidaEnderecoEmail(string email)
+        {
+            try
+            {
+                MailAddress mailAddress = new MailAddress(email);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
         }
     }
 }

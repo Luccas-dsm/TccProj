@@ -31,6 +31,10 @@ namespace TccProj.Views.Info
             NfcInfo.GestureRecognizers.Clear();
             QrCodeInfo.GestureRecognizers.Clear();
 
+
+            if (!Dispositivo.PossuiNFC)
+                frameNfc.BackgroundColor = Color.FromHex("#F8F8F8");
+
             NfcInfo.GestureRecognizers.Add(btnChart_NFC());
             QrCodeInfo.GestureRecognizers.Add(btnChart_QrCode());
         }
@@ -42,7 +46,14 @@ namespace TccProj.Views.Info
 
             tapGestureRecognizer.Tapped += async (s, e) =>
             {
-                await Navigation.PushModalAsync(new GraficosView(TratamentoNfc));
+                if (Dispositivo.PossuiNFC)
+                {
+                    await Navigation.PushModalAsync(new GraficosView(TratamentoNfc));
+                }
+                else
+                {
+                    await DisplayAlert("Ops!", "Este dispositivo não possui NFC", "OK");
+                }
             };
             return tapGestureRecognizer;
         }
@@ -53,7 +64,7 @@ namespace TccProj.Views.Info
 
             tapGestureRecognizer.Tapped += async (s, e) =>
             {
-                    await Navigation.PushModalAsync(new GraficosView(TratamentoQrCode));
+                await Navigation.PushModalAsync(new GraficosView(TratamentoQrCode));
             };
             return tapGestureRecognizer;
         }
@@ -76,12 +87,14 @@ namespace TccProj.Views.Info
                     {
 
                         case "QrCode":
-                            QrCodeInfo.Children.Add(new BoxInfo(item.Tipo, string.Format(item.Media.ToString("N4") + " ms"), this));
+                            QrCodeInfo.Children.Add(new BoxInfo(item.Tipo, string.Format(item.Media.ToString("N6") + " seg"), this));
 
                             break;
                         case "NFC":
-                            NfcInfo.Children.Add(new BoxInfo(item.Tipo, string.Format(item.Media.ToString("N4") + " ms"), this));
-
+                            if (Dispositivo.PossuiNFC)
+                                NfcInfo.Children.Add(new BoxInfo(item.Tipo, string.Format(item.Media.ToString("N6") + " seg"), this));
+                            else
+                                NfcInfo.Children.Add(new BoxInfo(item.Tipo,"Não Possui", this));
                             break;
 
                     }
@@ -91,7 +104,10 @@ namespace TccProj.Views.Info
 
         private void btnGraficos_Clicked(object sender, System.EventArgs e)
         {
-            Navigation.PushAsync(new GraficoComparativoView(TratamentoQrCode.OrderBy(o=> o.Tipo).ToList(), TratamentoNfc.OrderBy(o => o.Tipo).ToList()));
+            if (!Dispositivo.PossuiNFC)
+                DisplayAlert("Atenção!", "Este dispositivo não possui a tecnologia NFC, os dados sobre essa tecnologia serão igual a 0", "OK");
+
+            Navigation.PushAsync(new GraficoComparativoView(TratamentoQrCode.OrderBy(o => o.Tipo).ToList(), TratamentoNfc.OrderBy(o => o.Tipo).ToList()));
         }
     }
 }

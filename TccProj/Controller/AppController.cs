@@ -2,6 +2,7 @@
 using Android.OS;
 using Java.IO;
 using Java.Lang;
+using Plugin.NFC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace TccProj.Controller
                     Fabricante = Build.Manufacturer,
                     MemoriaRam = GetTotalMemory() + " Mb",
                     Modelo = Build.Model,
-                    PossuiNFC = true,
+                    PossuiNFC = PossuiNfc(),
                     SeqUsuario = seqUsuario,
                     SistemaOperacional = DeviceInfo.Platform + " " + Build.VERSION.Release,
                     FabricanteCpu = Build.Hardware
@@ -46,6 +47,10 @@ namespace TccProj.Controller
 
             }
         }
+        private bool PossuiNfc() => CrossNFC.Current.IsAvailable;
+                
+                  
+    
 
         private string GetGpuModel()
         {
@@ -281,16 +286,16 @@ namespace TccProj.Controller
 
         private double CalculaMediaModoOperacao(List<DadosModel> lista, string parametro)
         {
-            int quantidade = lista.Where(w => w.ModoOperacao == parametro).Count();
-            if (quantidade == 0)
+            var listaSeparada = lista.Where(w => w.ModoOperacao == parametro).ToList();
+            if (listaSeparada.Count() <= 0)
                 return 0;
 
             double tempoTotal = 0;
 
-            lista.ForEach(f => tempoTotal += f.TempoResposta.TotalMilliseconds);
+            listaSeparada.ForEach(f => tempoTotal += f.TempoResposta.TotalSeconds);
 
 
-            return tempoTotal / quantidade;
+            return tempoTotal / listaSeparada.Count();
         }
         public bool ValidaEnderecoEmail(string email)
         {

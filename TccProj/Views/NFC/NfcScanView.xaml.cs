@@ -60,11 +60,13 @@ namespace TccProj.Views.NFC
                 if (TagInfo != null)
                 {
                     stopwatch.Start();
-                    double memoryBefore = Process.GetCurrentProcess().WorkingSet64;
+                    double memoryBefore = GC.GetTotalMemory(true);
+
                     CrossNFC.Current.StartListening();
 
-                    double memoryAfter = Process.GetCurrentProcess().WorkingSet64;
-                    Dados.UsoMemoria = memoryBefore - memoryAfter;
+                    double memoryAfter = GC.GetTotalMemory(true);
+
+                    Dados.UsoMemoria = Math.Abs(memoryAfter - memoryBefore);
 
                     stopwatch.Stop();
                     double ticks = stopwatch.ElapsedTicks;
@@ -74,7 +76,8 @@ namespace TccProj.Views.NFC
                     Dados.UsoCpu = AppController.TransoformarHzEmGhz(frequenciaHz); // divide por 1 bilhão para converter para GHz
 
                     Dados.TempoResposta = stopwatch.Elapsed;
-                    Dados.Tamanho = Encoding.UTF8.GetByteCount(TagInfo.Records[0].Message); 
+                    Dados.Tamanho = Encoding.UTF8.GetByteCount(TagInfo.Records[0].Message);
+
                     _ = AppService.SalvarTeste(new DadosData(Dados));
 
                 }

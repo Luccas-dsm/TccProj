@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -10,6 +11,7 @@ using TccProj.Models;
 using TccProj.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
 using ZXing.QrCode.Internal;
@@ -21,6 +23,8 @@ namespace TccProj.Views.QrCode
     {
         ZXingBarcodeImageView barcode;
         InfoDispositivoModel Dispositivo;
+        DadosModel Dados;
+
         AppController AppController = new AppController();
         AppServices AppService = new AppServices();
 
@@ -28,32 +32,38 @@ namespace TccProj.Views.QrCode
         {
             this.Dispositivo = infoDispositivo;
             InitializeComponent();
+            Dados = AppController.PreencheGravarQrCode();
+            Dados.SeqInfoDispositivo = Dispositivo.Seq;
         }
 
         private void btnGerar_Clicked(object sender, EventArgs e)
         {
-            var dados = AppController.PreencheGravarQrCode();
-            Stopwatch stopwatch = new Stopwatch();
 
-            stopwatch.Start();
-            double memoryBefore = Process.GetCurrentProcess().WorkingSet64;
-            barcode = GeradorQr(text.Text);
-            dados.Tamanho = Encoding.UTF8.GetByteCount(barcode.BarcodeValue);
-            double memoryAfter = Process.GetCurrentProcess().WorkingSet64;
-            dados.UsoMemoria = memoryBefore - memoryAfter;
+      
+                Stopwatch stopwatch = new Stopwatch();
 
-            stopwatch.Stop();
-            double ticks = stopwatch.ElapsedTicks;
-            double seconds = stopwatch.Elapsed.TotalSeconds;
+                stopwatch.Start();
 
-            var frequenciaHz = AppController.ConversaoDeFrequencia(ticks, seconds);
-            dados.UsoCpu = AppController.TransoformarHzEmGhz(frequenciaHz); // divide por 1 bilhão para converter para GHz
+                double memoryBefore = GC.GetTotalMemory(true);
+                barcode = GeradorQr(text.Text);
+                double memoryAfter = GC.GetTotalMemory(true);
 
-            dados.TempoResposta = stopwatch.Elapsed;
+                Dados.UsoMemoria = (Math.Abs(memoryAfter - memoryBefore));
+                Dados.Tamanho = Encoding.UTF8.GetByteCount(barcode.BarcodeValue);
 
-            _ = AppService.SalvarTeste(new DadosData(dados));
-            stackQrCode.Children.Clear();
-            stackQrCode.Children.Add(barcode);
+                stopwatch.Stop();
+                double ticks = stopwatch.ElapsedTicks;
+                double seconds = stopwatch.Elapsed.TotalSeconds;
+
+                var frequenciaHz = AppController.ConversaoDeFrequencia(ticks, seconds);
+                Dados.UsoCpu = AppController.TransoformarHzEmGhz(frequenciaHz); // divide por 1 bilhão para converter para GHz
+
+                Dados.TempoResposta = stopwatch.Elapsed;
+
+                _ = AppService.SalvarTeste(new DadosData(Dados));
+                stackQrCode.Children.Clear();
+                stackQrCode.Children.Add(barcode);
+            
         }
 
         public ZXingBarcodeImageView GeradorQr(string conteudo, int width = 300, int height = 300, int margin = 10)

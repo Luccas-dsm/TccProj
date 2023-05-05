@@ -19,44 +19,13 @@ namespace TccProj.Views.Home
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomeView : ContentPage
     {
-        AppServices app = new AppServices();
-        AppController appController = new AppController();
+
         InfoDispositivoModel Dispositivo { get; set; }
+
         public HomeView(InfoDispositivoModel dispositivo)
         {
             this.Dispositivo = dispositivo;
             InitializeComponent();
-
-            Login();
-
-        }
-        public async void Login()
-        {
-            UsuarioModel Usuario = new UsuarioModel()
-            {
-                Seq = "-NS1asXbE9KnGJOaozXu",
-                Email = "luccas@gmail.com",
-                Senha = "1234"
-            };
-            Dispositivo = await appController.InformacoesDispositivo(Usuario.Seq);
-        }
-
-        public async void Salvar()
-        {
-            var dispositivo = new InfoDispositivoModel()
-            {
-                CPU = "adreno",
-                Fabricante = "Samsung",
-                MemoriaRam = "6gb",
-                Modelo = "SM-760G",
-                PossuiNFC = true,
-                SeqUsuario = "XXX",
-                SistemaOperacional = "Android",
-                Seq = "X"
-            };
-
-            var key = await app.SalvarDispositivo(new InfoDispositivoData(dispositivo));
-
         }
 
         private async void QrBtn_Clicked(object sender, EventArgs e)
@@ -68,7 +37,7 @@ namespace TccProj.Views.Home
         {
             if (!CrossNFC.Current.IsAvailable)
             {
-                DisplayAlert("Ops!", "O seu dispositivo não possui a tecnologia NFC", "OK");
+              await  DisplayAlert("Ops!", "O seu dispositivo não possui a tecnologia NFC", "OK");
 
             }
             else

@@ -183,7 +183,7 @@ namespace TccProj.Views.NFC
             await StartListeningIfNotiOS();
 
         }
-       async void SubscribeEvents()
+        async void SubscribeEvents()
         {
             if (_eventsAlreadySubscribed)
                 return;
@@ -211,7 +211,6 @@ namespace TccProj.Views.NFC
 
         async Task Publish(NFCNdefTypeFormat? type = null)
         {
-
             Stopwatch stopwatch = new Stopwatch();
             await StartListeningIfNotiOS();
             try
@@ -220,16 +219,16 @@ namespace TccProj.Views.NFC
 
                 if (type.HasValue) _type = type.Value;
                 {
-
-
-
                     stopwatch.Start();
-                    double memoryBefore = Process.GetCurrentProcess().WorkingSet64;
 
-                    CrossNFC.Current.StartPublishing(!type.HasValue);
+                    double memoryBefore = GC.GetTotalMemory(true);
 
-                    double memoryAfter = Process.GetCurrentProcess().WorkingSet64;
-                    Dados.UsoMemoria = memoryBefore - memoryAfter;
+                    CrossNFC.Current.StartPublishing(!type.HasValue); // metodo sendo calculado
+
+                    double memoryAfter = GC.GetTotalMemory(true);
+
+
+                    Dados.UsoMemoria = Math.Abs(memoryAfter - memoryBefore);
 
                     stopwatch.Stop();
                     double ticks = stopwatch.ElapsedTicks;
@@ -241,8 +240,6 @@ namespace TccProj.Views.NFC
                     Dados.TempoResposta = stopwatch.Elapsed;
                     Dados.Tamanho = Encoding.UTF8.GetByteCount(txtInput.Text);
                     _ = AppService.SalvarTeste(new DadosData(Dados));
-
-
                 }
 
             }
@@ -257,20 +254,20 @@ namespace TccProj.Views.NFC
         {
             try
             {
-
                 CrossNFC.Current.StopPublishing();
+
                 if (tagInfo.IsEmpty)
                 {
-                    await DisplayAlert("Eba!", "A operação de formatação da Tag foi um sucesso!", "Ok");                
+                    await DisplayAlert("Eba!", "A operação de formatação da Tag foi um sucesso!", "Ok");
                 }
                 else
                 {
                     await DisplayAlert("Eba!", "A operação de gravação na Tag foi um sucesso!", "Ok");
-                   
+
                 }
 
                 btnGravar.BackgroundColor = Color.FromHex("#F8F8F8");
-                
+
             }
             catch (Exception ex)
             {

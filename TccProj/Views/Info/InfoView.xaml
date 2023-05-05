@@ -29,7 +29,7 @@
                 <Frame Background="#F3F3" HeightRequest="2" CornerRadius="50" Padding="0"></Frame>
             </StackLayout>
         </Frame>
-        <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="3" Grid.Column="0" Grid.RowSpan="2" >
+        <Frame BackgroundColor="#F3F3F3"  Padding="5" HasShadow="True" CornerRadius="10" Grid.Row="3" Grid.Column="0" Grid.RowSpan="2" x:Name="frameNfc" >
             <StackLayout x:Name="NfcInfo">
                 <Label Text="NFC:" FontSize="20" FontAttributes="Bold" TextColor="#000"></Label>
                 <Frame Background="#F3F3" HeightRequest="2" CornerRadius="50" Padding="0"></Frame>

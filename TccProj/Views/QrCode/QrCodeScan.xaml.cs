@@ -20,7 +20,9 @@ namespace TccProj.Views.QrCode
         InfoDispositivoModel Dispositivo;
         AppServices AppService = new AppServices();
         AppController AppController = new AppController();
+
         public event EventHandler<string> BarcodeReaded;
+
         DadosModel Dados;
 
         public QrCodeScan(InfoDispositivoModel infoDispositivo)
@@ -55,20 +57,22 @@ namespace TccProj.Views.QrCode
             zxing.OnScanResult += (result) =>
             {
                 stopwatch.Start();
-                double memoryBefore = Process.GetCurrentProcess().WorkingSet64;
-
+                double memoryAfter;
+                double memoryBefore;
                 Device.BeginInvokeOnMainThread(async () =>
                 {
 
                     // Para a analise
                     zxing.IsAnalyzing = false;
                     Dados.Tamanho = result.NumBits;
+                    memoryBefore = GC.GetTotalMemory(true);
                     BarcodeReaded?.Invoke(this, result.Text);
+                    memoryAfter = GC.GetTotalMemory(true);
+                    Dados.UsoMemoria = memoryAfter - memoryBefore;
                     MensagemResuldado(result.Text);
 
                 });
-                double memoryAfter = Process.GetCurrentProcess().WorkingSet64;
-                Dados.UsoMemoria = memoryBefore - memoryAfter;
+
 
                 stopwatch.Stop();
                 double ticks = stopwatch.ElapsedTicks;
